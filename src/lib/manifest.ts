@@ -7,16 +7,16 @@ export function buildManifest(state: ThemeState) {
   if (images && Object.keys(images).length) {
     m.theme.images = {};
     if (images.theme_frame) {
-      m.theme.images.theme_frame = `images/${images.theme_frame.name}`;
+      m.theme.images.theme_frame = `images/theme_frame.png`;
     }
     if (images.theme_toolbar) {
-      m.theme.images.theme_toolbar = `images/${images.theme_toolbar.name}`;
-    }
-    if (images.theme_tab_background) {
-      m.theme.images.theme_tab_background = `images/${images.theme_tab_background.name}`;
+      m.theme.images.theme_toolbar = `images/theme_toolbar.png`;
     }
     if (images.theme_ntp_background) {
-      m.theme.images.theme_ntp_background = `images/${images.theme_ntp_background.name}`;
+      m.theme.images.theme_ntp_background = `images/theme_ntp_background.png`;
+    }
+    if (images.theme_tab_background) {
+      m.theme.images.theme_tab_background = `images/theme_tab_background.png`;
     }
   }
 

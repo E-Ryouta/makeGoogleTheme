@@ -1,25 +1,21 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Box } from "@mantine/core";
-import { useSelectedSlot, useTheme } from "../store/themeStore";
-import { colorToCss, rgbToHex } from "../lib/color";
+import type React from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useSelectedSlot } from "../../../store/themeStore";
+import { colorToCss, rgbToHex } from "../../../lib/color";
+import { useTheme } from "../../../store/themeStore";
 
-export default function PreviewCanvas() {
+export default function PreviewPanel() {
   const { state } = useTheme();
   const { selectedSlot, setSelectedSlot } = useSelectedSlot();
 
-  // Window mode to preview variants in manifest (active/inactive only)
-  const [mode, setMode] = useState<"active" | "inactive">("active");
-
-  // Frame color switches with mode
   const frameColor = useMemo(() => {
-    const c =
-      mode === "inactive"
-        ? (state.colors as any).frame_inactive
-        : state.colors.frame;
+    const c = state.colors.frame;
     return (
       colorToCss(c) || rgbToHex(c ? ([c[0], c[1], c[2]] as any) : undefined)
     );
-  }, [mode, state.colors]);
+  }, [state.colors]);
+
   const toolbarColor =
     colorToCss(state.colors.toolbar) ||
     rgbToHex(
@@ -31,39 +27,8 @@ export default function PreviewCanvas() {
           ] as any)
         : undefined,
     );
-  const activeTabTextColor =
-    colorToCss(state.colors.tab_text) ||
-    rgbToHex(
-      state.colors.tab_text
-        ? ([
-            state.colors.tab_text[0],
-            state.colors.tab_text[1],
-            state.colors.tab_text[2],
-          ] as any)
-        : undefined,
-    );
 
-  // Decide inactive tab text by mode (incognito removed)
-  const inactiveTabTextColor = useMemo(() => {
-    const colors = state.colors as any;
-    const c =
-      mode === "inactive"
-        ? colors.tab_background_text_inactive || colors.tab_background_text
-        : colors.tab_background_text;
-    return (
-      colorToCss(c) || rgbToHex(c ? ([c[0], c[1], c[2]] as any) : undefined)
-    );
-  }, [mode, state.colors]);
-
-  // Inactive tab background by mode (incognito removed)
-  const inactiveTabBgColor = useMemo(() => {
-    const colors = state.colors as any;
-    const c =
-      mode === "inactive"
-        ? colors.background_tab_inactive || colors.background_tab
-        : colors.background_tab;
-    return colorToCss(c);
-  }, [mode, state.colors]);
+  // Tabs removed
   const bookmarkTextColor =
     colorToCss(state.colors.bookmark_text) ||
     rgbToHex(
@@ -111,17 +76,22 @@ export default function PreviewCanvas() {
     return URL.createObjectURL(f.blob);
   }, [state.images.theme_frame]);
 
+  // Frame overlay removed
+
   const toolbarBgUrl = useMemo(() => {
     const f = state.images.theme_toolbar;
     if (!f) return undefined;
     return URL.createObjectURL(f.blob);
   }, [state.images.theme_toolbar]);
 
+  // Tab background image (for inactive tabs and new-tab button)
   const tabBgUrl = useMemo(() => {
-    const f = state.images.theme_tab_background;
+    const f = (state.images as any).theme_tab_background as
+      | { blob: Blob }
+      | undefined;
     if (!f) return undefined;
     return URL.createObjectURL(f.blob);
-  }, [state.images.theme_tab_background]);
+  }, [(state.images as any).theme_tab_background]);
 
   const ntpBgUrl = useMemo(() => {
     const f = state.images.theme_ntp_background;
@@ -153,6 +123,8 @@ export default function PreviewCanvas() {
     };
   }, [frameBgUrl]);
 
+  // Frame overlay URL management removed
+
   useEffect(() => {
     if (prevUrl.current.toolbar && prevUrl.current.toolbar !== toolbarBgUrl)
       URL.revokeObjectURL(prevUrl.current.toolbar);
@@ -165,7 +137,7 @@ export default function PreviewCanvas() {
   useEffect(() => {
     if (prevUrl.current.tab && prevUrl.current.tab !== tabBgUrl)
       URL.revokeObjectURL(prevUrl.current.tab);
-    prevUrl.current.tab = tabBgUrl;
+    prevUrl.current.tab = tabBgUrl || undefined;
     return () => {
       if (prevUrl.current.tab) URL.revokeObjectURL(prevUrl.current.tab);
     };
@@ -198,12 +170,12 @@ export default function PreviewCanvas() {
         if (a === "left") return "left center";
         if (a === "right") return "right center";
         if (a === "top") return "center top";
-        if (a === "bottom") return "center calc(100% - 40px)"; // avoid sub-pixel cropping at bottom
+        if (a === "bottom") return "center 100%"; // avoid sub-pixel cropping at bottom
         if (a === "center") return "center center";
         // Adjust any "* bottom" to compensate for transform scale rounding
         if (a.endsWith(" bottom")) {
           const x = a.split(" ")[0] as "left" | "center" | "right";
-          return `${x} calc(100% - 40px)`;
+          return `${x} 100%`;
         }
         return a;
       }
@@ -212,12 +184,21 @@ export default function PreviewCanvas() {
     backgroundRepeat: state.properties.ntp_background_repeat || "no-repeat",
     // 画像があっても余白は背景色で塗る（実機同様）
     backgroundColor: ntpBgColor || "#ffffff",
+    borderRadius: (() => {
+      // 右下の場合は右下にradiusを、左下の場合は左下にradiusを設定する
+      const a = state.properties.ntp_background_alignment;
+      if (a === "right bottom") {
+        return "0 0 10px 0";
+      } else if (a === "left bottom") {
+        return "0 0 0 10px";
+      }
+
+      return "0 0 0 0";
+    })(),
   };
 
-  const slotOutline = (slot: string) =>
-    selectedSlot === slot
-      ? { outline: "2px solid #4c9aff", outlineOffset: 0 }
-      : {};
+  // Selection outline removed
+  const slotOutline = (_slot: string) => ({});
 
   const buttonsTint = state.tints.buttons;
   const buttonBg = (state.colors as any).button_background as any;
@@ -258,10 +239,12 @@ export default function PreviewCanvas() {
 
   // More Chrome‑like vertical metrics (Windows, 100% scaling, approx).
   const METRICS = {
-    tabStrip: 40,
-    toolbar: 64,
+    tabStrip: 50,
+    toolbar: 44,
     bookmarks: 40,
   } as const;
+  // Base width used for tab background offsetting
+  const TAB_WIDTH = 260;
   const NTP_HEIGHT = Math.max(
     360,
     BASE_HEIGHT - (METRICS.tabStrip + METRICS.toolbar + METRICS.bookmarks),
@@ -271,16 +254,17 @@ export default function PreviewCanvas() {
 
   return (
     <Box ref={containerRef} h={"calc(100vh - 140px)"}>
+      {/* Mode control removed */}
       <div
         style={{
           width: BASE_WIDTH,
           height: BASE_HEIGHT,
           transform: `scale(${scale})`,
           transformOrigin: "top left",
-          border: "1px solid #ddd",
           borderRadius: 8,
           overflow: "hidden",
           background: "#fff",
+          border: "1px solid",
         }}
       >
         <style>{`
@@ -290,12 +274,7 @@ export default function PreviewCanvas() {
         .pc-icon:hover, .pc-winbtn:hover {
           filter: brightness(1.18);
         }
-        .pc-tab-inactive {
-          transition: background-color .12s ease, color .12s ease;
-        }
-        .pc-tab-inactive:hover {
-          filter: brightness(1.08);
-        }
+        /* Tabs removed */
         .pc-bookmark, .pc-ntp-link {
           transition: filter .12s ease, color .12s ease;
         }
@@ -303,37 +282,15 @@ export default function PreviewCanvas() {
           filter: brightness(1.15);
         }
       `}</style>
-        {/* Mode toggle (incognito removed) */}
-        <div style={{ display: "flex", gap: 6, padding: "8px 8px 0" }}>
-          {[
-            { key: "active", label: "通常" },
-            { key: "inactive", label: "非アクティブ" },
-          ].map((b) => (
-            <button
-              key={b.key}
-              onClick={() => setMode(b.key as any)}
-              style={{
-                fontSize: 12,
-                padding: "4px 8px",
-                borderRadius: 6,
-                border: "1px solid #d1d5db",
-                background: mode === b.key ? "#eef2ff" : "#fff",
-                cursor: "pointer",
-              }}
-            >
-              {b.label}
-            </button>
-          ))}
-        </div>
-        {/* Tab strip / frame */}
+        {/* Frame (tab strip removed) */}
         <div
           style={{
             background: frameColor || "#e5e9f6",
             backgroundImage: frameBgUrl ? `url(${frameBgUrl})` : undefined,
-            backgroundSize: "cover",
-            backgroundPosition: "center top",
-            backgroundRepeat: "no-repeat",
-            padding: "6px 12px 0",
+            backgroundPosition: "left top",
+            backgroundOrigin: "border-box",
+            backgroundRepeat: "repeat-x",
+            padding: "0 0 0 14px",
             userSelect: "none",
           }}
           onClick={() => setSelectedSlot("frame")}
@@ -343,13 +300,11 @@ export default function PreviewCanvas() {
             <div
               style={{
                 position: "absolute",
-                right: 6,
-                top: -4,
+                right: -2,
                 display: "flex",
-                gap: 6,
               }}
             >
-              {["_", "□", "×"].map((s, i) => (
+              {["ー", "▢", "✕"].map((s, i) => (
                 <div
                   key={i}
                   title={i === 0 ? "Minimize" : i === 1 ? "Maximize" : "Close"}
@@ -359,14 +314,13 @@ export default function PreviewCanvas() {
                   }}
                   className="pc-winbtn"
                   style={{
-                    width: 26,
-                    height: 18,
-                    borderRadius: 4,
+                    width: 55,
+                    height: 55,
                     background: windowButtonCss,
                     display: "grid",
                     placeItems: "center",
-                    color: toolbarTextColor || "#fff",
-                    fontSize: 10,
+                    color: "black",
+                    fontSize: 20,
                     opacity: 0.9,
                     cursor: "pointer",
                   }}
@@ -380,30 +334,29 @@ export default function PreviewCanvas() {
             style={{
               display: "flex",
               alignItems: "flex-end",
-              gap: 8,
+              gap: 4,
               height: METRICS.tabStrip,
               position: "relative",
               ...slotOutline("frame"),
-              backgroundImage: tabBgUrl ? `url(${tabBgUrl})` : undefined,
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
             }}
           >
             {/* Active tab */}
             <div
               onClick={(e) => {
                 e.stopPropagation();
-                setSelectedSlot("tab_background_text");
               }}
               style={{
-                // Use toolbar color to mimic how active tab merges with toolbar
                 background: toolbarColor || frameColor || "#fff",
+                backgroundImage: toolbarBgUrl
+                  ? `url(${toolbarBgUrl})`
+                  : undefined,
+                backgroundPosition: `left -12px top -20px`,
                 borderTopLeftRadius: 10,
                 borderTopRightRadius: 10,
                 padding: "8px 16px",
-                minWidth: 120,
+                minWidth: TAB_WIDTH,
                 boxShadow: "0 -1px 0 rgba(0,0,0,0.12) inset",
-                cursor: "pointer",
+                cursor: "default",
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -416,28 +369,27 @@ export default function PreviewCanvas() {
                   }}
                 />
                 <div
-                  style={{ color: activeTabTextColor || "#444", fontSize: 13 }}
+                  style={{ color: toolbarTextColor || "#444", fontSize: 13 }}
                 >
                   New Tab
                 </div>
               </div>
             </div>
 
-            {/* Inactive tab */}
+            {/* Inactive tab 1 */}
             <div
               onClick={(e) => {
                 e.stopPropagation();
-                setSelectedSlot("tab_background_text");
               }}
-              className="pc-tab-inactive"
               style={{
-                borderTopLeftRadius: 10,
-                borderTopRightRadius: 10,
+                borderRadius: 10,
                 padding: "8px 16px",
-                minWidth: 120,
-                cursor: "pointer",
-                color: inactiveTabTextColor || "#65768a",
-                background: inactiveTabBgColor || "transparent",
+                minWidth: TAB_WIDTH,
+                cursor: "default",
+                color: "#65768a",
+                backgroundImage: tabBgUrl ? `url(${tabBgUrl})` : undefined,
+                backgroundRepeat: "repeat-x",
+                backgroundPosition: `left -${TAB_WIDTH + 18}px top -20px`,
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -449,16 +401,76 @@ export default function PreviewCanvas() {
                     background: "rgba(255,255,255,0.5)",
                   }}
                 />
-                <div
-                  style={{
-                    color: inactiveTabTextColor || "#65768a",
-                    fontSize: 13,
-                  }}
-                >
+                <div style={{ color: toolbarTextColor, fontSize: 13 }}>
                   Docs
                 </div>
               </div>
             </div>
+
+            {/* Inactive tab 2 (offset by 1 tab) */}
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              style={{
+                borderRadius: 10,
+                padding: "8px 16px",
+                minWidth: TAB_WIDTH,
+                cursor: "default",
+                color: "#65768a",
+                backgroundImage: tabBgUrl ? `url(${tabBgUrl})` : undefined,
+                backgroundRepeat: "repeat-x",
+                backgroundPosition: `left -${TAB_WIDTH * 2 + 22}px top -20px`,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div
+                  style={{
+                    width: 16,
+                    height: 16,
+                    borderRadius: 2,
+                    background: "rgba(255,255,255,0.5)",
+                  }}
+                />
+                <div style={{ color: toolbarTextColor, fontSize: 13 }}>
+                  Mail
+                </div>
+              </div>
+            </div>
+
+            {/* Inactive tab 3 (offset by 2 tabs) */}
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              style={{
+                borderRadius: 10,
+                padding: "8px 16px",
+                minWidth: TAB_WIDTH,
+                cursor: "default",
+                color: "#65768a",
+                backgroundImage: tabBgUrl ? `url(${tabBgUrl})` : undefined,
+                backgroundRepeat: "repeat-x",
+                backgroundPosition: `left -${TAB_WIDTH * 3 + 26}px top -20px`,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div
+                  style={{
+                    width: 16,
+                    height: 16,
+                    borderRadius: 2,
+                    background: "rgba(255,255,255,0.5)",
+                  }}
+                />
+                <div style={{ color: toolbarTextColor, fontSize: 13 }}>
+                  Work
+                </div>
+              </div>
+            </div>
+
+            {/* Spacer */}
+            <div style={{ flex: 1 }} />
           </div>
         </div>
 
@@ -467,16 +479,20 @@ export default function PreviewCanvas() {
           onClick={() => setSelectedSlot("toolbar")}
           style={{
             height: METRICS.toolbar,
+            marginTop: -1,
             background: toolbarColor || "#f0f3fa",
             backgroundImage: toolbarBgUrl ? `url(${toolbarBgUrl})` : undefined,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
+            // Offset background by frame (tab strip) height
+            backgroundPosition: `left 0px top -55px`,
+            backgroundOrigin: "border-box",
+            backgroundRepeat: "repeat-x",
             display: "flex",
             alignItems: "center",
             gap: 10,
-            padding: "0 16px",
+            padding: "0 12px",
             color: toolbarTextColor,
             cursor: "pointer",
+            position: "relative",
             ...slotOutline("toolbar"),
           }}
         >
@@ -500,8 +516,6 @@ export default function PreviewCanvas() {
               height: 32,
               borderRadius: 16,
               background: omniboxBgColor,
-              border: "1px solid rgba(0,0,0,0.12)",
-              boxShadow: "inset 0 1px 2px rgba(0,0,0,0.06)",
               flex: 1,
               display: "flex",
               alignItems: "center",
@@ -544,13 +558,16 @@ export default function PreviewCanvas() {
           onClick={() => setSelectedSlot("bookmark_text")}
           style={{
             height: METRICS.bookmarks,
+            marginTop: -1,
             display: "flex",
             alignItems: "center",
             gap: 18,
             padding: "0 14px",
             color: bookmarkTextColor || "#2f3b46",
+            backgroundColor: toolbarColor,
+            backgroundImage: toolbarBgUrl ? `url(${toolbarBgUrl})` : undefined,
+            backgroundPosition: `left 0px top -100px`,
             cursor: "pointer",
-            borderBottom: "1px solid #e6e8ee",
             ...slotOutline("bookmark_text"),
           }}
         >
@@ -671,7 +688,7 @@ export default function PreviewCanvas() {
                   e.stopPropagation();
                   setSelectedSlot("ntp_text");
                 }}
-                style={{ color: ntpTextColor || "#1f2937", fontSize: 14 }}
+                style={{ color: "#1f2937", fontSize: 14 }}
               >
                 Search Google or type a URL
               </div>
@@ -726,7 +743,7 @@ export default function PreviewCanvas() {
                   }}
                   className="pc-ntp-link"
                   style={{
-                    color: ntpLinkColor || "#1a73e8",
+                    color: ntpTextColor || "#1a73e8",
                     fontSize: 12,
                     textAlign: "center",
                   }}

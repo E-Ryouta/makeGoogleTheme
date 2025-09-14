@@ -1,11 +1,13 @@
-import React, { createContext, useContext, useMemo, useReducer, useState } from "react";
-import { RGB, RGBA, ThemeState, Tint, FileRef, SlotKey } from "../types/theme";
-
-type History<T> = {
-  past: T[];
-  present: T;
-  future: T[];
-};
+import {
+  createContext,
+  useContext,
+  useMemo,
+  useReducer,
+  useState,
+} from "react";
+import type { RGB, RGBA, ThemeState, Tint } from "../types/theme";
+import type { FileRef } from "../types/fileRef";
+import type { SlotKey } from "../types/slotkey";
 
 type Action =
   | { type: "set_name"; name: string }
@@ -25,13 +27,25 @@ function reducePresent(state: ThemeState, action: Action): ThemeState {
     case "set_version":
       return { ...state, version: action.version };
     case "set_color":
-      return { ...state, colors: { ...state.colors, [action.key]: action.value } };
+      return {
+        ...state,
+        colors: { ...state.colors, [action.key]: action.value },
+      };
     case "set_tint":
-      return { ...state, tints: { ...state.tints, [action.key]: action.value } };
+      return {
+        ...state,
+        tints: { ...state.tints, [action.key]: action.value },
+      };
     case "set_property":
-      return { ...state, properties: { ...state.properties, [action.key]: action.value } };
+      return {
+        ...state,
+        properties: { ...state.properties, [action.key]: action.value },
+      };
     case "set_image":
-      return { ...state, images: { ...state.images, [action.key]: action.value } };
+      return {
+        ...state,
+        images: { ...state.images, [action.key]: action.value },
+      };
     case "reset":
       return action.state;
     default:
@@ -39,39 +53,13 @@ function reducePresent(state: ThemeState, action: Action): ThemeState {
   }
 }
 
-function historyReducer(history: History<ThemeState>, action: Action): History<ThemeState> {
-  switch (action.type) {
-    case "undo": {
-      const { past, present, future } = history;
-      if (past.length === 0) return history;
-      const prev = past[past.length - 1];
-      const newPast = past.slice(0, -1);
-      return { past: newPast, present: prev, future: [present, ...future] };
-    }
-    case "redo": {
-      const { past, present, future } = history;
-      if (future.length === 0) return history;
-      const next = future[0];
-      const newFuture = future.slice(1);
-      return { past: [...past, present], present: next, future: newFuture };
-    }
-    default: {
-      const newPresent = reducePresent(history.present, action);
-      if (newPresent === history.present) return history;
-      return { past: [...history.past, history.present], present: newPresent, future: [] };
-    }
-  }
-}
-
 const initialTheme: ThemeState = {
-  name: "新しいテーマ",
+  name: "new _theme",
   version: "1.0.0",
   images: {},
   colors: {
     frame: [34, 34, 34],
     toolbar: [24, 24, 24],
-    tab_text: [255, 255, 255],
-    tab_background_text: [220, 220, 220],
     bookmark_text: [240, 240, 240],
     ntp_background: [255, 255, 255],
     ntp_text: [20, 20, 20],
@@ -86,10 +74,8 @@ const initialTheme: ThemeState = {
 };
 
 type ThemeContextValue = {
-  history: History<ThemeState>;
+  history: ThemeState;
   dispatch: React.Dispatch<Action>;
-  undo: () => void;
-  redo: () => void;
   setSelectedSlot: (s: SlotKey | null) => void;
   selectedSlot: SlotKey | null;
 };
@@ -97,42 +83,37 @@ type ThemeContextValue = {
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [history, dispatch] = useReducer(historyReducer, {
-    past: [],
-    present: initialTheme,
-    future: [],
-  });
+  const [history, dispatch] = useReducer(reducePresent, initialTheme);
   const [selectedSlot, setSelectedSlot] = useState<SlotKey | null>(null);
 
   const value = useMemo<ThemeContextValue>(
     () => ({
       history,
       dispatch,
-      undo: () => dispatch({ type: "undo" }),
-      redo: () => dispatch({ type: "redo" }),
       selectedSlot,
       setSelectedSlot,
     }),
-    [history, selectedSlot]
+    [history, selectedSlot],
   );
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  );
 }
 
 export function useTheme() {
   const ctx = useContext(ThemeContext);
   if (!ctx) throw new Error("useTheme must be used inside ThemeProvider");
   return {
-    state: ctx.history.present,
+    state: ctx.history,
     dispatch: ctx.dispatch,
-    undo: ctx.undo,
-    redo: ctx.redo,
   };
 }
 
 export function useSelectedSlot() {
   const ctx = useContext(ThemeContext);
-  if (!ctx) throw new Error("useSelectedSlot must be used inside ThemeProvider");
+  if (!ctx)
+    throw new Error("useSelectedSlot must be used inside ThemeProvider");
   return {
     selectedSlot: ctx.selectedSlot,
     setSelectedSlot: ctx.setSelectedSlot,
@@ -153,7 +134,13 @@ export function setImageWithMeta(
     const url = URL.createObjectURL(blob);
     const img = new Image();
     img.onload = () => {
-      const value: FileRef = { id, name, blob, width: img.width, height: img.height };
+      const value: FileRef = {
+        id,
+        name,
+        blob,
+        width: img.width,
+        height: img.height,
+      };
       dispatch({ type: "set_image", key, value });
       URL.revokeObjectURL(url);
     };
@@ -191,6 +178,9 @@ export function setProperty(
   dispatch({ type: "set_property", key, value });
 }
 
-export function resetTheme(dispatch: React.Dispatch<Action>, state: ThemeState) {
+export function resetTheme(
+  dispatch: React.Dispatch<Action>,
+  state: ThemeState,
+) {
   dispatch({ type: "reset", state });
 }
