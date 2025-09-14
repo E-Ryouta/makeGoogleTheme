@@ -6,32 +6,29 @@ import MajorSectionHeader from "./MajorSectionHeader";
 export default function ColorsSection() {
   return (
     <Stack>
-      <MajorSectionHeader label="Colors" />
-      <SectionHeader label="Frame" />
-      <ColorField label="Frame" colorKey="frame" />
+      <MajorSectionHeader label="色" />
+      <SectionHeader label="フレーム" />
+      <ColorField label="フレーム" colorKey="frame" />
+      <ColorField label="フレーム (ボタン)" colorKey="button_background" />
 
-      <SectionHeader label="Toolbar" />
-      <ColorField label="Toolbar" colorKey="toolbar" />
-      <ColorField label="Toolbar text" colorKey="toolbar_text" />
-      <ColorField label="Toolbar button icon" colorKey="toolbar_button_icon" />
-      <ColorField
-        label="Window buttons (right top)"
-        colorKey="button_background"
-      />
+      <SectionHeader label="ツールバー" />
+      <ColorField label="ツールバー（背景）" colorKey="toolbar" />
+      <ColorField label="ツールバー（文字）" colorKey="toolbar_text" />
+      <ColorField label="ツールバー (ボタン)" colorKey="toolbar_button_icon" />
 
       {/* Tabs removed */}
 
-      <SectionHeader label="Bookmarks" />
-      <ColorField label="Bookmark bar text" colorKey="bookmark_text" />
+      <SectionHeader label="ブックマーク" />
+      <ColorField label="ブックマーク（文字）" colorKey="bookmark_text" />
 
-      <SectionHeader label="New Tab Page" />
-      <ColorField label="New Tab background color" colorKey="ntp_background" />
-      <ColorField label="New Tab text" colorKey="ntp_text" />
-      <ColorField label="New Tab link" colorKey="ntp_link" />
+      <SectionHeader label="ホームページ" />
+      <ColorField label="ホームページ (背景)" colorKey="ntp_background" />
+      <ColorField label="ホームページ (文字)" colorKey="ntp_text" />
+      <ColorField label="ホームページ (リンク)" colorKey="ntp_link" />
 
-      <SectionHeader label="Omnibox" />
-      <ColorField label="Omnibox background" colorKey="omnibox_background" />
-      <ColorField label="Omnibox text" colorKey="omnibox_text" />
+      <SectionHeader label="オムニボックス" />
+      <ColorField label="オムニボックス(背景)" colorKey="omnibox_background" />
+      <ColorField label="オムニボックス(文字)" colorKey="omnibox_text" />
     </Stack>
   );
 }

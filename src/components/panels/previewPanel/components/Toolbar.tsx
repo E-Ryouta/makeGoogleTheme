@@ -4,6 +4,7 @@ import {
   Ellipsis,
   Download,
   RotateCw,
+  Info,
 } from "lucide-react";
 import { ICON, METRICS } from "../../../../constants/ui";
 import type { ColorProps, ImageProps } from "../../../../types/types";
@@ -37,6 +38,15 @@ export function Toolbar({
     color: toolbarIconCss,
   });
 
+  // Determine default omnibox state and apply transparency only to the background color
+  const isDefaultOmniboxBg = (() => {
+    const v = (omniboxBackgroundColor || "").toLowerCase();
+    return v === "" || v === "#fff" || v === "#ffffff" || v === "white";
+  })();
+  const omniboxBg = isDefaultOmniboxBg
+    ? "rgba(255,255,255,0.5)"
+    : omniboxBackgroundColor;
+
   return (
     <div
       style={{
@@ -67,7 +77,7 @@ export function Toolbar({
         style={{
           height: 32,
           borderRadius: 16,
-          background: omniboxBackgroundColor,
+          background: omniboxBg,
           flex: 1,
           display: "flex",
           alignItems: "center",
@@ -77,15 +87,33 @@ export function Toolbar({
       >
         <div
           style={{
-            width: 20,
-            height: 20,
-            borderRadius: 90,
-            background: "#c4cbd7",
+            width: 25,
+            height: 25,
+            borderRadius: 100,
+            background: toolbarColor,
+            textAlign: "center",
+            alignContent: "center",
+            alignItems: "center",
           }}
-        />
-        <div style={{ color: omniboxTextColor, fontSize: 13 }}>
-          プレースフォルダー
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <Info
+              style={{
+                width: 15,
+                height: 15,
+              }}
+            />
+          </div>
         </div>
+        <div style={{ color: omniboxTextColor, fontSize: 13 }}>URL</div>
       </div>
 
       {/* 右側のアイコン */}

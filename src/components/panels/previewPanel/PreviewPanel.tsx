@@ -5,7 +5,6 @@ import { useThemeColors } from "../../../hooks/useThemeColors";
 import { useThemeImages } from "../../../hooks/useThemeImages";
 import { useTheme } from "../../../store/themeStore";
 import { CANVAS, NTP, METRICS } from "../../../constants/ui";
-import { WindowControls } from "./components/WindowControls";
 import { TabStrip } from "./components/TabStrip";
 import { Toolbar } from "./components/Toolbar";
 import { BookmarksBar } from "./components/BookmarksBar";
@@ -78,7 +77,7 @@ export default function PreviewPanel() {
     ? toolbarIconColor
     : buttonsTint
       ? `hsl(${Math.round((buttonsTint[0] || 0) * 360)}, ${Math.round((buttonsTint[1] || 0) * 100)}%, ${Math.round((buttonsTint[2] || 0) * 100)}%)`
-      : "rgba(0,0,0,0.5)";
+      : "";
   // Window caption buttons prefer button_background, fallback to toolbarIconCss
   const windowButtonCss = buttonBg ? colors.buttonBackground : toolbarIconCss;
 

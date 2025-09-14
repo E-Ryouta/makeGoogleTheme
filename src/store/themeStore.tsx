@@ -48,17 +48,13 @@ function reducePresent(state: ThemeState, action: Action): ThemeState {
 }
 
 const initialTheme: ThemeState = {
-  name: "new _theme",
-  version: "1.0.0",
+  name: "Default",
+  version: "1.0",
   images: {},
   colors: {
-    frame: [34, 34, 34],
-    toolbar: [24, 24, 24],
-    bookmark_text: [240, 240, 240],
-    ntp_background: [255, 255, 255],
-    ntp_text: [20, 20, 20],
-    ntp_link: [0, 100, 220],
-    button_background: [101, 101, 255],
+    frame: [255, 255, 255],
+    toolbar: [241, 243, 244],
+    // Additional colors can be added by user/import.
   },
   tints: {},
   properties: {

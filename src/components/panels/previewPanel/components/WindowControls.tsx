@@ -3,24 +3,20 @@ import { colorToCss } from "../../../../lib/color";
 
 type WindowControlsProps = {
   /** ウィンドウボタンの背景色 */
-  defaultButtonColor: string | RGB | RGBA;
   buttonColor: string | RGB | RGBA;
 };
 
 /**
  * ウィンドウのコントロールボタン（最小化、最大化、閉じる）
  */
-export function WindowControls({
-  defaultButtonColor,
-  buttonColor,
-}: WindowControlsProps) {
+export function WindowControls({ buttonColor }: WindowControlsProps) {
   const buttons = [
     { symbol: "ー", title: "Minimize" },
     { symbol: "▢", title: "Maximize" },
     { symbol: "✕", title: "Close" },
   ];
 
-  const buttonColorPrev = buttonColor ? buttonColor : defaultButtonColor;
+  const buttonColorPrev = buttonColor ? buttonColor : "";
 
   const backgroundCss = Array.isArray(buttonColorPrev)
     ? colorToCss(buttonColorPrev)
@@ -44,7 +40,7 @@ export function WindowControls({
             background: backgroundCss,
             display: "grid",
             placeItems: "center",
-            color: "white",
+            color: "#696969",
             fontSize: 20,
             opacity: 0.9,
           }}

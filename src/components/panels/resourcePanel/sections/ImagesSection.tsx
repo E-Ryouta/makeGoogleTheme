@@ -3,7 +3,6 @@ import { ImageField } from "../../../fields/imageField/ImageField";
 import MajorSectionHeader from "./MajorSectionHeader";
 import { NtpBackgroundPositionSelect } from "../../../fields/imageField/NtpBackgroundPositionSelect";
 import { NtpBackgroundRepeatAndLogo } from "../../../fields/imageField/NtpBackgroundRepeatAndLogo";
-import { NtpLogoAlternateSwitch } from "../../../fields/imageField/NtpLogoAlternateSwitch";
 import { useTheme } from "../../../../store/themeStore";
 
 export default function ImagesSection() {
@@ -12,11 +11,11 @@ export default function ImagesSection() {
   return (
     <Stack>
       <MajorSectionHeader label="画像" />
-      <ImageField label="フレーム画像" imageKey="theme_frame" />
-      <ImageField label="ツールバー画像" imageKey="theme_toolbar" />
+      <ImageField label="フレームの背景画像" imageKey="theme_frame" />
+      <ImageField label="ツールバーの背景画像" imageKey="theme_toolbar" />
       <ImageField label="タブの背景画像" imageKey="theme_tab_background" />
       <ImageField
-        label="新しいタブの背景画像"
+        label="ホーム画面の背景画像"
         imageKey="theme_ntp_background"
       />
       {hasNtpBackground && (
@@ -27,9 +26,6 @@ export default function ImagesSection() {
             </Grid.Col>
             <Grid.Col span={{ base: 12, sm: 6 }}>
               <NtpBackgroundRepeatAndLogo />
-            </Grid.Col>
-            <Grid.Col span={12}>
-              <NtpLogoAlternateSwitch />
             </Grid.Col>
           </Grid>
         </Paper>

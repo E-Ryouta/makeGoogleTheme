@@ -64,10 +64,7 @@ export function TabStrip({
       </div>
       <div style={{ flex: 1 }} />
 
-      <WindowControls
-        buttonColor={windowButtonCss}
-        defaultButtonColor={frameColor}
-      />
+      <WindowControls buttonColor={windowButtonCss} />
     </div>
   );
 }

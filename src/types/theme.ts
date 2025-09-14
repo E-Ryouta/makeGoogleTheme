@@ -60,7 +60,6 @@ export type ThemeState = {
       | "right center"
       | "right bottom";
     ntp_background_repeat?: "no-repeat" | "repeat" | "repeat-x" | "repeat-y";
-    ntp_logo_alternate?: 0 | 1 | boolean; // manifest only
   };
   _preview?: {
     fit?: "cover" | "contain" | "auto";
