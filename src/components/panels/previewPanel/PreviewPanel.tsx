@@ -72,7 +72,7 @@ export default function PreviewPanel() {
   const buttonBg = colors.buttonBackground;
   const toolbarIconColor = colors.toolbarButtonIcon;
   // Toolbar icons prefer toolbar_button_icon → fallback gray
-  const toolbarIconCss = toolbarIconColor || "rgba(0,0,0,0.5)";
+  const toolbarIconCss = toolbarIconColor || "";
   // Window caption buttons prefer button_background, fallback to toolbarIconCss
   const windowButtonCss = buttonBg ? colors.buttonBackground : toolbarIconCss;
 
