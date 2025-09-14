@@ -1,14 +1,8 @@
 import { Switch } from "@mantine/core";
 import { setProperty, useTheme } from "../../../store/themeStore";
-import type { ThemeState } from "../../../types/theme";
 
-export function NtpLogoAlternateSwitch({
-  imageKey,
-}: {
-  imageKey: keyof ThemeState["images"];
-}) {
+export function NtpLogoAlternateSwitch() {
   const { state, dispatch } = useTheme();
-  if (imageKey !== "theme_ntp_background") return null;
 
   return (
     <Switch

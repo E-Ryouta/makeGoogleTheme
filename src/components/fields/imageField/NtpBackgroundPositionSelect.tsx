@@ -2,17 +2,8 @@ import { Select } from "@mantine/core";
 import { setProperty, useTheme } from "../../../store/themeStore";
 import type { ThemeState } from "../../../types/theme";
 
-export function NtpBackgroundPositionSelect({
-  imageKey,
-  options,
-}: {
-  imageKey: keyof ThemeState["images"];
-  options?: {
-    position?: boolean;
-  };
-}) {
+export function NtpBackgroundPositionSelect() {
   const { state, dispatch } = useTheme();
-  if (imageKey !== "theme_ntp_background" || !options?.position) return null;
 
   return (
     <Select

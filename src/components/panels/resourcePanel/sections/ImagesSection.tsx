@@ -23,19 +23,13 @@ export default function ImagesSection() {
         <Paper withBorder p="md" radius="md">
           <Grid>
             <Grid.Col span={{ base: 12, sm: 6 }}>
-              <NtpBackgroundPositionSelect
-                imageKey="theme_ntp_background"
-                options={{ position: true }}
-              />
+              <NtpBackgroundPositionSelect />
             </Grid.Col>
             <Grid.Col span={{ base: 12, sm: 6 }}>
-              <NtpBackgroundRepeatAndLogo
-                imageKey="theme_ntp_background"
-                options={{ repeat: true }}
-              />
+              <NtpBackgroundRepeatAndLogo />
             </Grid.Col>
             <Grid.Col span={12}>
-              <NtpLogoAlternateSwitch imageKey="theme_ntp_background" />
+              <NtpLogoAlternateSwitch />
             </Grid.Col>
           </Grid>
         </Paper>
