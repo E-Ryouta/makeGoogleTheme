@@ -1,9 +1,14 @@
-import type React from "react";
 import { METRICS, TAB } from "../../../../constants/ui";
-import { ColorProps, ImageProps } from "./types";
+import type { ColorProps, ImageProps } from "../../../../types/types";
 import { Tab } from "./Tab";
 
-interface TabStripProps extends ColorProps, ImageProps {}
+// type TabStripProps = ColorProps & ImageProps;
+
+type TabStripProps = Pick<
+  ColorProps,
+  "frameColor" | "toolbarColor" | "toolbarTextColor"
+> &
+  Pick<ImageProps, "tabBgUrl" | "toolbarBgUrl">;
 
 /**
  * タブストリップコンポーネント
@@ -13,6 +18,7 @@ export function TabStrip({
   toolbarColor,
   toolbarTextColor,
   tabBgUrl,
+  toolbarBgUrl,
 }: TabStripProps) {
   const tabs = [
     { text: "New Tab", isActive: true },
@@ -31,14 +37,15 @@ export function TabStrip({
         position: "relative",
       }}
     >
-      {tabs.map((tab, index) => (
+      {tabs.map((tab, _) => (
         <Tab
-          key={index}
+          key={tab.text}
           {...tab}
           toolbarColor={toolbarColor}
           frameColor={frameColor}
           toolbarTextColor={toolbarTextColor}
           tabBgUrl={tabBgUrl}
+          toolbarBgUrl={toolbarBgUrl}
         />
       ))}
       <div style={{ flex: 1 }} />

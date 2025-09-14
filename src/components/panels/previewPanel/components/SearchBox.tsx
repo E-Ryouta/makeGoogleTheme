@@ -1,12 +1,10 @@
-import type React from "react";
 import { SEARCH_BOX } from "../../../../constants/ui";
-// setSelectedSlot removed; no props needed
-interface SearchBoxProps {}
+import { Search } from "lucide-react";
 
 /**
  * 検索ボックスコンポーネント
  */
-export function SearchBox({}: SearchBoxProps) {
+export function SearchBox() {
   return (
     <div
       style={{
@@ -23,26 +21,14 @@ export function SearchBox({}: SearchBoxProps) {
         padding: "0 14px",
       }}
     >
-      <div
+      <Search
         style={{
           width: 18,
           height: 18,
-          borderRadius: 3,
-          background: "#c4cbd7",
+          color: "#c4cbd7",
         }}
       />
-      <div style={{ color: "#1f2937", fontSize: 14 }}>
-        Search Google or type a URL
-      </div>
-      <div
-        style={{
-          marginLeft: "auto",
-          width: 18,
-          height: 18,
-          borderRadius: 3,
-          background: "#c4cbd7",
-        }}
-      />
+      <div style={{ color: "#1f2937", fontSize: 14 }}>プレースフォルダー</div>
     </div>
   );
 }

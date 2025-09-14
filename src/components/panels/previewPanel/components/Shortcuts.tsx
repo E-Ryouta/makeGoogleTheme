@@ -1,8 +1,7 @@
-import type React from "react";
 import { SHORTCUT } from "../../../../constants/ui";
-import { ColorProps } from "./types";
+import { ColorProps } from "../../../../types/types";
 
-interface ShortcutsProps extends ColorProps {}
+type ShortcutsProps = Pick<ColorProps, "ntpTextColor">;
 
 /**
  * ショートカットコンポーネント

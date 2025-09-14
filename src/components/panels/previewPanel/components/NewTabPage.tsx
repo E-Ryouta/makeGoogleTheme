@@ -1,10 +1,9 @@
 import type React from "react";
-import { ICON } from "../../../../constants/ui";
-import { ColorProps, ImageProps } from "./types";
+import { ColorProps } from "../../../../types/types";
 import { SearchBox } from "./SearchBox";
 import { Shortcuts } from "./Shortcuts";
 
-interface NewTabPageProps extends ColorProps, ImageProps {
+type NewTabPageProps = Pick<ColorProps, "ntpTextColor"> & {
   /** NTPの高さ */
   ntpHeight: number;
   /** 検索ボックスの上端位置 */
@@ -15,27 +14,18 @@ interface NewTabPageProps extends ColorProps, ImageProps {
   ntpStyle: React.CSSProperties;
   /** ツールバーアイコンのCSS */
   toolbarIconCss: string;
-}
+};
 
 /**
  * 新規タブページコンポーネント
  */
 export function NewTabPage({
-  ntpBackgroundColor,
   ntpTextColor,
-  ntpLinkColor,
-  ntpBgUrl,
   ntpHeight,
   searchTop,
   shortcutsTop,
   ntpStyle,
-  toolbarIconCss,
 }: NewTabPageProps) {
-  const quickLinks = [
-    { text: "Gmail", slot: "ntp_link" },
-    { text: "画像", slot: "ntp_link" },
-  ];
-
   return (
     <div
       style={{
@@ -45,51 +35,6 @@ export function NewTabPage({
         ...ntpStyle,
       }}
     >
-      {/* NTP右上のクイックリンク */}
-      <div
-        style={{
-          position: "absolute",
-          right: 16,
-          top: 12,
-          display: "flex",
-          alignItems: "center",
-          gap: 14,
-        }}
-      >
-        {quickLinks.map((link, index) => (
-          <div
-            key={index}
-            className="pc-ntp-link"
-            style={{
-              color: ntpLinkColor || "#1a73e8",
-              fontSize: 13,
-            }}
-          >
-            {link.text}
-          </div>
-        ))}
-        <div
-          className="pc-icon"
-          title="Apps"
-          style={{
-            width: ICON.DEFAULT_SIZE,
-            height: ICON.DEFAULT_SIZE,
-            borderRadius: 6,
-            background: toolbarIconCss,
-          }}
-        />
-        <div
-          className="pc-icon"
-          title="Profile"
-          style={{
-            width: ICON.PROFILE_SIZE,
-            height: ICON.PROFILE_SIZE,
-            borderRadius: ICON.PROFILE_BORDER_RADIUS,
-            background: toolbarIconCss,
-          }}
-        />
-      </div>
-
       {/* 中央の検索ボックス */}
       <div
         style={{

@@ -1,8 +1,8 @@
 import type React from "react";
 import { TAB } from "../../../../constants/ui";
-import { TabData } from "./types";
+import type { TabData } from "../../../../types/types";
 
-interface TabProps extends TabData {
+type TabProps = TabData & {
   /** ツールバーの色 */
   toolbarColor: string;
   /** フレームの色 */
@@ -11,7 +11,9 @@ interface TabProps extends TabData {
   toolbarTextColor: string;
   /** タブ背景画像のURL */
   tabBgUrl?: string;
-}
+  /** アクティブ時の背景画像のURL */
+  toolbarBgUrl?: string;
+};
 
 /**
  * 個別のタブコンポーネント
@@ -24,6 +26,7 @@ export function Tab({
   frameColor,
   toolbarTextColor,
   tabBgUrl,
+  toolbarBgUrl,
 }: TabProps) {
   const baseStyle: React.CSSProperties = {
     padding: "8px 16px",
@@ -37,7 +40,7 @@ export function Tab({
   const activeStyle: React.CSSProperties = {
     ...baseStyle,
     background: toolbarColor || frameColor || "#fff",
-    backgroundImage: tabBgUrl ? `url(${tabBgUrl})` : undefined,
+    backgroundImage: toolbarBgUrl ? `url(${toolbarBgUrl})` : undefined,
     backgroundPosition: `left -12px top -20px`,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -63,12 +66,7 @@ export function Tab({
   };
 
   return (
-    <div
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
-      style={isActive ? activeStyle : inactiveStyle}
-    >
+    <div style={isActive ? activeStyle : inactiveStyle}>
       <div style={iconStyle} />
       <div
         style={{

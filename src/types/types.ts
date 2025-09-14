@@ -2,7 +2,7 @@
  * プレビューパネル内のコンポーネントで使用する共通の型定義
  */
 
-export interface ColorProps {
+export type ColorProps = {
   /** フレームの色 */
   frameColor: string;
   /** ツールバーの色 */
@@ -25,9 +25,9 @@ export interface ColorProps {
   toolbarIconColor: string;
   /** ボタン背景の色 */
   buttonBackgroundColor: string;
-}
+};
 
-export interface ImageProps {
+export type ImageProps = {
   /** フレーム背景画像のURL */
   frameBgUrl?: string;
   /** ツールバー背景画像のURL */
@@ -36,13 +36,13 @@ export interface ImageProps {
   tabBgUrl?: string;
   /** NTP背景画像のURL */
   ntpBgUrl?: string;
-}
+};
 
-export interface TabData {
+export type TabData = {
   /** タブのテキスト */
   text: string;
   /** アクティブかどうか */
   isActive: boolean;
   /** 背景画像のオフセット（非アクティブタブ用） */
   backgroundOffset?: number;
-}
+};

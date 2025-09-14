@@ -1,8 +1,7 @@
-import type React from "react";
-interface WindowControlsProps {
+type WindowControlsProps = {
   /** ウィンドウボタンの背景色 */
   buttonColor: string;
-}
+};
 
 /**
  * ウィンドウのコントロールボタン（最小化、最大化、閉じる）

@@ -1,11 +1,24 @@
-import type React from "react";
-import { METRICS, ICON } from "../../../../constants/ui";
-import { ColorProps, ImageProps } from "./types";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Ellipsis,
+  Download,
+  RotateCw,
+} from "lucide-react";
+import { ICON, METRICS } from "../../../../constants/ui";
+import type { ColorProps, ImageProps } from "../../../../types/types";
 
-interface ToolbarProps extends ColorProps, ImageProps {
-  /** ツールバーアイコンのCSS */
-  toolbarIconCss: string;
-}
+type ToolbarProps = Pick<
+  ColorProps,
+  | "toolbarColor"
+  | "toolbarTextColor"
+  | "omniboxBackgroundColor"
+  | "omniboxTextColor"
+> &
+  Pick<ImageProps, "toolbarBgUrl"> & {
+    /** ツールバーアイコンのCSS */
+    toolbarIconCss: string;
+  };
 
 /**
  * ツールバーコンポーネント
@@ -21,16 +34,14 @@ export function Toolbar({
   const icon = (w: number = ICON.DEFAULT_SIZE) => ({
     width: w,
     height: w,
-    borderRadius: ICON.BORDER_RADIUS,
-    background: toolbarIconCss,
-    opacity: 1,
+    color: toolbarIconCss,
   });
 
   return (
     <div
       style={{
         height: METRICS.toolbar,
-        marginTop: -1,
+        marginTop: -2,
         background: toolbarColor || "#f0f3fa",
         backgroundImage: toolbarBgUrl ? `url(${toolbarBgUrl})` : undefined,
         backgroundPosition: `left 0px top -55px`,
@@ -45,13 +56,10 @@ export function Toolbar({
       }}
     >
       {/* ナビゲーションボタン */}
-      <div
-        title="Buttons"
-        style={{ display: "flex", gap: 6 }}
-      >
-        <div className="pc-icon" style={{ ...icon(ICON.TOOLBAR_SIZE) }} />
-        <div className="pc-icon" style={{ ...icon(ICON.TOOLBAR_SIZE) }} />
-        <div className="pc-icon" style={{ ...icon(ICON.TOOLBAR_SIZE) }} />
+      <div title="Buttons" style={{ display: "flex", gap: 6 }}>
+        <ArrowLeft style={{ ...icon() }} />
+        <ArrowRight style={{ ...icon() }} />
+        <RotateCw style={{ ...icon() }} />
       </div>
 
       {/* オムニボックス */}
@@ -69,24 +77,25 @@ export function Toolbar({
       >
         <div
           style={{
-            width: 16,
-            height: 16,
-            borderRadius: 2,
+            width: 20,
+            height: 20,
+            borderRadius: 90,
             background: "#c4cbd7",
           }}
         />
-        <div
-          style={{ color: omniboxTextColor, fontSize: 13 }}
-        >
-          Search Google or type a URL
+        <div style={{ color: omniboxTextColor, fontSize: 13 }}>
+          プレースフォルダー
         </div>
       </div>
 
       {/* 右側のアイコン */}
       <div style={{ display: "flex", gap: 8 }}>
-        <div className="pc-icon" style={{ ...icon() }} />
-        <div className="pc-icon" style={{ ...icon() }} />
-        <div className="pc-icon" style={{ ...icon() }} />
+        <Download style={{ ...icon() }} />
+        <div
+          className="pc-icon"
+          style={{ ...icon(), borderRadius: 90, background: "#7d7d7d" }}
+        />
+        <Ellipsis style={{ ...icon(), transform: "rotate(90deg)" }} />
       </div>
     </div>
   );

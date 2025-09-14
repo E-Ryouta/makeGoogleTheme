@@ -119,21 +119,6 @@ export default function PreviewPanel() {
           border: "1px solid",
         }}
       >
-        <style>{`
-        .pc-icon, .pc-winbtn {
-          transition: filter .12s ease, opacity .12s ease, background-color .12s ease;
-        }
-        .pc-icon:hover, .pc-winbtn:hover {
-          filter: brightness(1.18);
-        }
-        /* Tabs removed */
-        .pc-bookmark, .pc-ntp-link {
-          transition: filter .12s ease, color .12s ease;
-        }
-        .pc-bookmark:hover, .pc-ntp-link:hover {
-          filter: brightness(1.15);
-        }
-      `}</style>
         {/* Frame (tab strip removed) */}
         <div
           style={{
@@ -146,15 +131,14 @@ export default function PreviewPanel() {
             userSelect: "none",
           }}
         >
-          <WindowControls
-            buttonColor={windowButtonCss}
-          />
           <TabStrip
             frameColor={colors.frame}
             toolbarColor={colors.toolbar}
             toolbarTextColor={colors.toolbarText}
             tabBgUrl={tabBgUrl}
+            toolbarBgUrl={toolbarBgUrl}
           />
+          <WindowControls buttonColor={windowButtonCss} />
         </div>
 
         <Toolbar
@@ -173,10 +157,7 @@ export default function PreviewPanel() {
         />
 
         <NewTabPage
-          ntpBackgroundColor={colors.ntpBackground}
           ntpTextColor={colors.ntpText}
-          ntpLinkColor={colors.ntpLink}
-          ntpBgUrl={ntpBgUrl}
           ntpHeight={ntpHeight}
           searchTop={searchTop}
           shortcutsTop={shortcutsTop}
