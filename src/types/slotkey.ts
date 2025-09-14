@@ -5,7 +5,6 @@ export type SlotKey =
   | "ntp_background"
   | "ntp_text"
   | "ntp_link"
-  | "buttons_tint"
   | "omnibox_background"
   | "omnibox_text"
   | "toolbar_text";

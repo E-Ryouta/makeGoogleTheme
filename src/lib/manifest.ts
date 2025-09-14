@@ -1,7 +1,7 @@
 import { ThemeState } from "../types/theme";
 
 export function buildManifest(state: ThemeState) {
-  const { name, version, images, colors, tints, properties } = state;
+  const { name, version, images, colors, properties } = state;
   const m: any = { manifest_version: 3, name, version, theme: {} };
 
   if (images && Object.keys(images).length) {
@@ -25,10 +25,7 @@ export function buildManifest(state: ThemeState) {
     Object.entries(colors).forEach(([k, v]) => v && (m.theme.colors[k] = v));
   }
 
-  if (tints && Object.keys(tints).length) {
-    m.theme.tints = {};
-    Object.entries(tints).forEach(([k, v]) => v && (m.theme.tints[k] = v));
-  }
+  // tints removed
 
   const props: any = {};
   if (properties?.ntp_background_alignment) props.ntp_background_alignment = properties.ntp_background_alignment;

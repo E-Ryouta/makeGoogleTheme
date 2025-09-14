@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, useReducer } from "react";
-import type { RGB, RGBA, ThemeState, Tint } from "../types/theme";
+import type { RGB, RGBA, ThemeState } from "../types/theme";
 import type { FileRef } from "../types/fileRef";
 // setSelectedSlot and SlotKey have been removed from the store
 
@@ -7,7 +7,6 @@ type Action =
   | { type: "set_name"; name: string }
   | { type: "set_version"; version: string }
   | { type: "set_color"; key: keyof ThemeState["colors"]; value?: RGB | RGBA }
-  | { type: "set_tint"; key: keyof ThemeState["tints"]; value?: Tint }
   | { type: "set_property"; key: keyof ThemeState["properties"]; value?: any }
   | { type: "set_image"; key: keyof ThemeState["images"]; value?: FileRef }
   | { type: "reset"; state: ThemeState }
@@ -25,11 +24,7 @@ function reducePresent(state: ThemeState, action: Action): ThemeState {
         ...state,
         colors: { ...state.colors, [action.key]: action.value },
       };
-    case "set_tint":
-      return {
-        ...state,
-        tints: { ...state.tints, [action.key]: action.value },
-      };
+    // tints removed
     case "set_property":
       return {
         ...state,
@@ -56,7 +51,7 @@ const initialTheme: ThemeState = {
     toolbar: [241, 243, 244],
     // Additional colors can be added by user/import.
   },
-  tints: {},
+  // tints removed
   properties: {
     ntp_background_alignment: "center",
     ntp_background_repeat: "no-repeat",
@@ -141,13 +136,7 @@ export function setColor(
   dispatch({ type: "set_color", key, value });
 }
 
-export function setTint(
-  dispatch: React.Dispatch<Action>,
-  key: keyof ThemeState["tints"],
-  value?: Tint,
-) {
-  dispatch({ type: "set_tint", key, value });
-}
+// setTint removed
 
 export function setProperty(
   dispatch: React.Dispatch<Action>,

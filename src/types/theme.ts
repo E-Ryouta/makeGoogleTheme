@@ -2,7 +2,6 @@ import { FileRef } from "./fileRef";
 
 export type RGB = [number, number, number]; // 0–255
 export type RGBA = [number, number, number, number]; // 0–255 + alpha 0–1
-export type Tint = [number, number, number]; // [h, s, l] in 0–1
 
 export type ThemeState = {
   name: string; // manifest.name
@@ -40,9 +39,7 @@ export type ThemeState = {
     // Preview-only legacy/fallback
     button_background?: RGB | RGBA;
   };
-  tints: {
-    buttons?: Tint;
-  };
+  // tints removed
   properties: {
     ntp_background_alignment?:
       | "left"

@@ -69,15 +69,10 @@ export default function PreviewPanel() {
     })(),
   };
 
-  const buttonsTint = state.tints.buttons;
   const buttonBg = colors.buttonBackground;
   const toolbarIconColor = colors.toolbarButtonIcon;
-  // Toolbar icons prefer toolbar_button_icon → tints.buttons → fallback gray
-  const toolbarIconCss = toolbarIconColor
-    ? toolbarIconColor
-    : buttonsTint
-      ? `hsl(${Math.round((buttonsTint[0] || 0) * 360)}, ${Math.round((buttonsTint[1] || 0) * 100)}%, ${Math.round((buttonsTint[2] || 0) * 100)}%)`
-      : "";
+  // Toolbar icons prefer toolbar_button_icon → fallback gray
+  const toolbarIconCss = toolbarIconColor || "rgba(0,0,0,0.5)";
   // Window caption buttons prefer button_background, fallback to toolbarIconCss
   const windowButtonCss = buttonBg ? colors.buttonBackground : toolbarIconCss;
 
