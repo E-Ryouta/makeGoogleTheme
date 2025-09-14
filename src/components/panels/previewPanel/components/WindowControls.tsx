@@ -1,47 +1,57 @@
+import type { RGB, RGBA } from "../../../../types/theme";
+import { colorToCss } from "../../../../lib/color";
+
 type WindowControlsProps = {
   /** ウィンドウボタンの背景色 */
-  buttonColor: string;
+  defaultButtonColor: string | RGB | RGBA;
+  buttonColor: string | RGB | RGBA;
 };
 
 /**
  * ウィンドウのコントロールボタン（最小化、最大化、閉じる）
  */
-export function WindowControls({ buttonColor }: WindowControlsProps) {
+export function WindowControls({
+  defaultButtonColor,
+  buttonColor,
+}: WindowControlsProps) {
   const buttons = [
     { symbol: "ー", title: "Minimize" },
     { symbol: "▢", title: "Maximize" },
     { symbol: "✕", title: "Close" },
   ];
 
+  const buttonColorPrev = buttonColor ? buttonColor : defaultButtonColor;
+
+  const backgroundCss = Array.isArray(buttonColorPrev)
+    ? colorToCss(buttonColorPrev)
+    : buttonColorPrev;
+
   return (
-    <div style={{ position: "relative", height: 0 }}>
-      <div
-        style={{
-          position: "absolute",
-          right: -2,
-          display: "flex",
-        }}
-      >
-        {buttons.map((button, i) => (
-          <div
-            key={i}
-            title={button.title}
-            className="pc-winbtn"
-            style={{
-              width: 55,
-              height: 55,
-              background: buttonColor,
-              display: "grid",
-              placeItems: "center",
-              color: "black",
-              fontSize: 20,
-              opacity: 0.9,
-            }}
-          >
-            {button.symbol}
-          </div>
-        ))}
-      </div>
+    <div
+      style={{
+        right: -2,
+        display: "flex",
+      }}
+    >
+      {buttons.map((button, i) => (
+        <div
+          key={i}
+          title={button.title}
+          className="pc-winbtn"
+          style={{
+            width: 55,
+            height: 55,
+            background: backgroundCss,
+            display: "grid",
+            placeItems: "center",
+            color: "white",
+            fontSize: 20,
+            opacity: 0.9,
+          }}
+        >
+          {button.symbol}
+        </div>
+      ))}
     </div>
   );
 }

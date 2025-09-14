@@ -137,8 +137,8 @@ export default function PreviewPanel() {
             toolbarTextColor={colors.toolbarText}
             tabBgUrl={tabBgUrl}
             toolbarBgUrl={toolbarBgUrl}
+            windowButtonCss={windowButtonCss}
           />
-          <WindowControls buttonColor={windowButtonCss} />
         </div>
 
         <Toolbar

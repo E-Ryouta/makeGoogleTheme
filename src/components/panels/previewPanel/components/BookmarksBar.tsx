@@ -21,9 +21,12 @@ export function BookmarksBar({
   return (
     <div
       style={{
+        height: METRICS.bookmarks,
+        position: "relative",
+        top: -2,
         display: "flex",
         alignItems: "center",
-        padding: "0px 14px",
+        padding: "0 14px",
         justifyContent: "space-between",
         backgroundColor: toolbarColor,
         backgroundImage: toolbarBgUrl ? `url(${toolbarBgUrl})` : undefined,
@@ -34,6 +37,7 @@ export function BookmarksBar({
         style={{
           display: "flex",
           alignItems: "center",
+          gap: 12,
         }}
       >
         <Grid2x2
@@ -43,16 +47,10 @@ export function BookmarksBar({
         />
         <div
           style={{
-            height: METRICS.bookmarks,
-            marginTop: -1,
             display: "flex",
             alignItems: "center",
             gap: 18,
-            padding: "0 14px",
             color: bookmarkTextColor || "#2f3b46",
-            backgroundColor: toolbarColor,
-            backgroundImage: toolbarBgUrl ? `url(${toolbarBgUrl})` : undefined,
-            backgroundPosition: `left 0px top -100px`,
           }}
         >
           {bookmarks.map((bookmark, _) => (
