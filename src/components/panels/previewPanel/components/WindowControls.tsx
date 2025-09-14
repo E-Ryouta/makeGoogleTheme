@@ -1,7 +1,5 @@
 import type React from "react";
-import { PreviewComponentProps } from "./types";
-
-interface WindowControlsProps extends PreviewComponentProps {
+interface WindowControlsProps {
   /** ウィンドウボタンの背景色 */
   buttonColor: string;
 }
@@ -9,10 +7,7 @@ interface WindowControlsProps extends PreviewComponentProps {
 /**
  * ウィンドウのコントロールボタン（最小化、最大化、閉じる）
  */
-export function WindowControls({
-  setSelectedSlot,
-  buttonColor,
-}: WindowControlsProps) {
+export function WindowControls({ buttonColor }: WindowControlsProps) {
   const buttons = [
     { symbol: "ー", title: "Minimize" },
     { symbol: "▢", title: "Maximize" },
@@ -32,10 +27,6 @@ export function WindowControls({
           <div
             key={i}
             title={button.title}
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedSlot("buttons_tint");
-            }}
             className="pc-winbtn"
             style={{
               width: 55,
@@ -46,7 +37,6 @@ export function WindowControls({
               color: "black",
               fontSize: 20,
               opacity: 0.9,
-              cursor: "pointer",
             }}
           >
             {button.symbol}

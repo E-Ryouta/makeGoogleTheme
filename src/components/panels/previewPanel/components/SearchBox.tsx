@@ -1,13 +1,12 @@
 import type React from "react";
 import { SEARCH_BOX } from "../../../../constants/ui";
-import { PreviewComponentProps } from "./types";
-
-interface SearchBoxProps extends PreviewComponentProps {}
+// setSelectedSlot removed; no props needed
+interface SearchBoxProps {}
 
 /**
  * 検索ボックスコンポーネント
  */
-export function SearchBox({ setSelectedSlot }: SearchBoxProps) {
+export function SearchBox({}: SearchBoxProps) {
   return (
     <div
       style={{
@@ -32,13 +31,7 @@ export function SearchBox({ setSelectedSlot }: SearchBoxProps) {
           background: "#c4cbd7",
         }}
       />
-      <div
-        onClick={(e) => {
-          e.stopPropagation();
-          setSelectedSlot("ntp_text");
-        }}
-        style={{ color: "#1f2937", fontSize: 14 }}
-      >
+      <div style={{ color: "#1f2937", fontSize: 14 }}>
         Search Google or type a URL
       </div>
       <div

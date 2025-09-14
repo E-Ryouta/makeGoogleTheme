@@ -1,17 +1,13 @@
 import type React from "react";
 import { METRICS } from "../../../../constants/ui";
-import { PreviewComponentProps, ColorProps, ImageProps } from "./types";
+import { ColorProps, ImageProps } from "./types";
 
-interface BookmarksBarProps
-  extends PreviewComponentProps,
-    ColorProps,
-    ImageProps {}
+interface BookmarksBarProps extends ColorProps, ImageProps {}
 
 /**
  * ブックマークバーコンポーネント
  */
 export function BookmarksBar({
-  setSelectedSlot,
   toolbarColor,
   bookmarkTextColor,
   toolbarBgUrl,
@@ -20,7 +16,6 @@ export function BookmarksBar({
 
   return (
     <div
-      onClick={() => setSelectedSlot("bookmark_text")}
       style={{
         height: METRICS.bookmarks,
         marginTop: -1,
@@ -32,7 +27,6 @@ export function BookmarksBar({
         backgroundColor: toolbarColor,
         backgroundImage: toolbarBgUrl ? `url(${toolbarBgUrl})` : undefined,
         backgroundPosition: `left 0px top -100px`,
-        cursor: "pointer",
       }}
     >
       {bookmarks.map((bookmark, index) => (

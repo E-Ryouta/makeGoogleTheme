@@ -1,13 +1,13 @@
 import type React from "react";
 import { SHORTCUT } from "../../../../constants/ui";
-import { PreviewComponentProps, ColorProps } from "./types";
+import { ColorProps } from "./types";
 
-interface ShortcutsProps extends PreviewComponentProps, ColorProps {}
+interface ShortcutsProps extends ColorProps {}
 
 /**
  * ショートカットコンポーネント
  */
-export function Shortcuts({ setSelectedSlot, ntpTextColor }: ShortcutsProps) {
+export function Shortcuts({ ntpTextColor }: ShortcutsProps) {
   return (
     <div
       style={{
@@ -41,10 +41,6 @@ export function Shortcuts({ setSelectedSlot, ntpTextColor }: ShortcutsProps) {
             }}
           />
           <div
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedSlot("ntp_link");
-            }}
             className="pc-ntp-link"
             style={{
               color: ntpTextColor || "#1a73e8",

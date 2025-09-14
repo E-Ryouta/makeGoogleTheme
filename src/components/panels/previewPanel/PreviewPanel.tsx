@@ -3,7 +3,7 @@ import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { useThemeColors } from "../../../hooks/useThemeColors";
 import { useThemeImages } from "../../../hooks/useThemeImages";
-import { useTheme, useSelectedSlot } from "../../../store/themeStore";
+import { useTheme } from "../../../store/themeStore";
 import { CANVAS, NTP, METRICS } from "../../../constants/ui";
 import { WindowControls } from "./components/WindowControls";
 import { TabStrip } from "./components/TabStrip";
@@ -13,7 +13,6 @@ import { NewTabPage } from "./components/NewTabPage";
 
 export default function PreviewPanel() {
   const { state } = useTheme();
-  const { setSelectedSlot } = useSelectedSlot();
   const colors = useThemeColors();
   const { frameBgUrl, toolbarBgUrl, tabBgUrl, ntpBgUrl } = useThemeImages();
 
@@ -146,14 +145,11 @@ export default function PreviewPanel() {
             padding: "0 0 0 14px",
             userSelect: "none",
           }}
-          onClick={() => setSelectedSlot("frame")}
         >
           <WindowControls
-            setSelectedSlot={setSelectedSlot}
             buttonColor={windowButtonCss}
           />
           <TabStrip
-            setSelectedSlot={setSelectedSlot}
             frameColor={colors.frame}
             toolbarColor={colors.toolbar}
             toolbarTextColor={colors.toolbarText}
@@ -162,7 +158,6 @@ export default function PreviewPanel() {
         </div>
 
         <Toolbar
-          setSelectedSlot={setSelectedSlot}
           toolbarColor={colors.toolbar}
           toolbarTextColor={colors.toolbarText}
           toolbarBgUrl={toolbarBgUrl}
@@ -172,14 +167,12 @@ export default function PreviewPanel() {
         />
 
         <BookmarksBar
-          setSelectedSlot={setSelectedSlot}
           toolbarColor={colors.toolbar}
           bookmarkTextColor={colors.bookmarkText}
           toolbarBgUrl={toolbarBgUrl}
         />
 
         <NewTabPage
-          setSelectedSlot={setSelectedSlot}
           ntpBackgroundColor={colors.ntpBackground}
           ntpTextColor={colors.ntpText}
           ntpLinkColor={colors.ntpLink}

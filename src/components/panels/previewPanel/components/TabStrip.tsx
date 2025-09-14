@@ -1,15 +1,14 @@
 import type React from "react";
 import { METRICS, TAB } from "../../../../constants/ui";
-import { PreviewComponentProps, ColorProps, ImageProps } from "./types";
+import { ColorProps, ImageProps } from "./types";
 import { Tab } from "./Tab";
 
-interface TabStripProps extends PreviewComponentProps, ColorProps, ImageProps {}
+interface TabStripProps extends ColorProps, ImageProps {}
 
 /**
  * タブストリップコンポーネント
  */
 export function TabStrip({
-  setSelectedSlot,
   frameColor,
   toolbarColor,
   toolbarTextColor,

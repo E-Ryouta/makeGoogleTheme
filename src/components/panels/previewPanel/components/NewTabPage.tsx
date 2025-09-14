@@ -1,13 +1,10 @@
 import type React from "react";
 import { ICON } from "../../../../constants/ui";
-import { PreviewComponentProps, ColorProps, ImageProps } from "./types";
+import { ColorProps, ImageProps } from "./types";
 import { SearchBox } from "./SearchBox";
 import { Shortcuts } from "./Shortcuts";
 
-interface NewTabPageProps
-  extends PreviewComponentProps,
-    ColorProps,
-    ImageProps {
+interface NewTabPageProps extends ColorProps, ImageProps {
   /** NTPの高さ */
   ntpHeight: number;
   /** 検索ボックスの上端位置 */
@@ -24,7 +21,6 @@ interface NewTabPageProps
  * 新規タブページコンポーネント
  */
 export function NewTabPage({
-  setSelectedSlot,
   ntpBackgroundColor,
   ntpTextColor,
   ntpLinkColor,
@@ -42,13 +38,11 @@ export function NewTabPage({
 
   return (
     <div
-      onClick={() => setSelectedSlot("ntp_background")}
       style={{
         height: ntpHeight,
         position: "relative",
         padding: 24,
         ...ntpStyle,
-        cursor: "pointer",
       }}
     >
       {/* NTP右上のクイックリンク */}
@@ -66,14 +60,9 @@ export function NewTabPage({
           <div
             key={index}
             className="pc-ntp-link"
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedSlot(link.slot);
-            }}
             style={{
               color: ntpLinkColor || "#1a73e8",
               fontSize: 13,
-              cursor: "pointer",
             }}
           >
             {link.text}
@@ -112,7 +101,7 @@ export function NewTabPage({
           placeItems: "center",
         }}
       >
-        <SearchBox setSelectedSlot={setSelectedSlot} />
+        <SearchBox />
       </div>
 
       {/* ショートカット行 */}
@@ -124,10 +113,7 @@ export function NewTabPage({
           top: shortcutsTop,
         }}
       >
-        <Shortcuts
-          setSelectedSlot={setSelectedSlot}
-          ntpTextColor={ntpTextColor}
-        />
+        <Shortcuts ntpTextColor={ntpTextColor} />
       </div>
     </div>
   );

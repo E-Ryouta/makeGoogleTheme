@@ -1,13 +1,7 @@
-import {
-  createContext,
-  useContext,
-  useMemo,
-  useReducer,
-  useState,
-} from "react";
+import { createContext, useContext, useMemo, useReducer } from "react";
 import type { RGB, RGBA, ThemeState, Tint } from "../types/theme";
 import type { FileRef } from "../types/fileRef";
-import type { SlotKey } from "../types/slotkey";
+// setSelectedSlot and SlotKey have been removed from the store
 
 type Action =
   | { type: "set_name"; name: string }
@@ -76,24 +70,19 @@ const initialTheme: ThemeState = {
 type ThemeContextValue = {
   history: ThemeState;
   dispatch: React.Dispatch<Action>;
-  setSelectedSlot: (s: SlotKey | null) => void;
-  selectedSlot: SlotKey | null;
 };
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [history, dispatch] = useReducer(reducePresent, initialTheme);
-  const [selectedSlot, setSelectedSlot] = useState<SlotKey | null>(null);
 
   const value = useMemo<ThemeContextValue>(
     () => ({
       history,
       dispatch,
-      selectedSlot,
-      setSelectedSlot,
     }),
-    [history, selectedSlot],
+    [history],
   );
 
   return (
@@ -111,13 +100,7 @@ export function useTheme() {
 }
 
 export function useSelectedSlot() {
-  const ctx = useContext(ThemeContext);
-  if (!ctx)
-    throw new Error("useSelectedSlot must be used inside ThemeProvider");
-  return {
-    selectedSlot: ctx.selectedSlot,
-    setSelectedSlot: ctx.setSelectedSlot,
-  };
+  throw new Error("useSelectedSlot has been removed");
 }
 
 export function setImageWithMeta(

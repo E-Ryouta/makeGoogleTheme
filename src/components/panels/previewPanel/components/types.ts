@@ -2,11 +2,6 @@
  * プレビューパネル内のコンポーネントで使用する共通の型定義
  */
 
-export interface PreviewComponentProps {
-  /** 選択されたスロットを設定する関数 */
-  setSelectedSlot: (slot: string | null) => void;
-}
-
 export interface ColorProps {
   /** フレームの色 */
   frameColor: string;

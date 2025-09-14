@@ -1,8 +1,8 @@
 import type React from "react";
 import { METRICS, ICON } from "../../../../constants/ui";
-import { PreviewComponentProps, ColorProps, ImageProps } from "./types";
+import { ColorProps, ImageProps } from "./types";
 
-interface ToolbarProps extends PreviewComponentProps, ColorProps, ImageProps {
+interface ToolbarProps extends ColorProps, ImageProps {
   /** ツールバーアイコンのCSS */
   toolbarIconCss: string;
 }
@@ -11,7 +11,6 @@ interface ToolbarProps extends PreviewComponentProps, ColorProps, ImageProps {
  * ツールバーコンポーネント
  */
 export function Toolbar({
-  setSelectedSlot,
   toolbarColor,
   toolbarTextColor,
   toolbarBgUrl,
@@ -29,7 +28,6 @@ export function Toolbar({
 
   return (
     <div
-      onClick={() => setSelectedSlot("toolbar")}
       style={{
         height: METRICS.toolbar,
         marginTop: -1,
@@ -43,16 +41,11 @@ export function Toolbar({
         gap: 10,
         padding: "0 12px",
         color: toolbarTextColor,
-        cursor: "pointer",
         position: "relative",
       }}
     >
       {/* ナビゲーションボタン */}
       <div
-        onClick={(e) => {
-          e.stopPropagation();
-          setSelectedSlot("buttons_tint");
-        }}
         title="Buttons"
         style={{ display: "flex", gap: 6 }}
       >
@@ -73,10 +66,6 @@ export function Toolbar({
           gap: 8,
           padding: "0 12px",
         }}
-        onClick={(e) => {
-          e.stopPropagation();
-          setSelectedSlot("omnibox_background");
-        }}
       >
         <div
           style={{
@@ -87,10 +76,6 @@ export function Toolbar({
           }}
         />
         <div
-          onClick={(e) => {
-            e.stopPropagation();
-            setSelectedSlot("omnibox_text");
-          }}
           style={{ color: omniboxTextColor, fontSize: 13 }}
         >
           Search Google or type a URL
