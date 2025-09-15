@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Anchor, Box, Group, Modal, Text, ActionIcon } from "@mantine/core";
+import { Box, Group, Modal, Text, ActionIcon } from "@mantine/core";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 type RevertGuideModalProps = {
