@@ -4,7 +4,7 @@ import App from "./App.tsx";
 import { MantineProvider } from "@mantine/core";
 import { theme } from "./theme";
 import { ThemeProvider } from "./store/themeStore";
-import { Analytics } from "@vercel/analytics/next";
+import { Analytics } from "@vercel/analytics/react";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
