@@ -5,11 +5,15 @@ import { ApplyGuideModal } from "./common/ApplyGuideModal";
 import { RevertGuideModal } from "./common/RevertGuideModal";
 
 export function AppHeader() {
-  const [openedApply, { open: openApply, close: closeApply }] = useDisclosure(false);
-  const [openedRevert, { open: openRevert, close: closeRevert }] = useDisclosure(false);
+  const [openedApply, { open: openApply, close: closeApply }] =
+    useDisclosure(false);
+  const [openedRevert, { open: openRevert, close: closeRevert }] =
+    useDisclosure(false);
   return (
     <>
-      <Title order={4}>Chrome Theme Builder</Title>
+      <Title order={1} size="h4">
+        Chrome Theme Builder
+      </Title>
       <Group gap="sm">
         <Anchor component="button" onClick={openApply} underline="always">
           適用方法

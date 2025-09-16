@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -7,9 +7,31 @@
       name="viewport"
       content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
     />
-    <title>Chrome Theme Builder</title>
+    <title>Chrome テーマビルダー | Google Chrome のテーマ作成ツール</title>
+    <meta name="description" content="Chrome テーマビルダーは、色や背景画像を調整して、オリジナルの Google Chrome テーマを直感的に作成・エクスポートできる無料ツールです。" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Chrome テーマビルダー" />
+    <meta property="og:description" content="オリジナルの Google Chrome テーマを直感的に作成・エクスポートできる無料ツール" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Chrome テーマビルダー",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Web",
+        "inLanguage": "ja",
+        "description": "色や背景画像を調整して、オリジナルの Google Chrome テーマを直感的に作成・エクスポートできる無料ツール"
+      }
+    </script>
   </head>
   <body>
+    <noscript>このアプリを利用するには JavaScript を有効にしてください。</noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
