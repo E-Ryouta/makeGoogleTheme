@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Box, Group, Modal, Text, ActionIcon } from "@mantine/core";
+import { ActionIcon, Box, Group, Modal, Text } from "@mantine/core";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useState } from "react";
 
 type RevertGuideModalProps = {
   opened: boolean;

@@ -20,7 +20,9 @@ export default function MajorSectionHeader({ label }: { label: string }) {
           background: "#1c7ed6",
         }}
       />
-      <Title order={5} style={{ margin: 0 }}>{label}</Title>
+      <Title order={5} style={{ margin: 0 }}>
+        {label}
+      </Title>
       <div
         aria-hidden
         style={{ flex: 1, height: 1, background: "#dee2e6", marginLeft: 6 }}
@@ -28,4 +30,3 @@ export default function MajorSectionHeader({ label }: { label: string }) {
     </div>
   );
 }
-

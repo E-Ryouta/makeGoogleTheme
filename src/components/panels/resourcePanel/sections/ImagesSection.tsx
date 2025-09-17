@@ -1,9 +1,9 @@
 import { Grid, Paper, Stack } from "@mantine/core";
+import { useTheme } from "../../../../store/themeStore";
 import { ImageField } from "../../../fields/imageField/ImageField";
-import MajorSectionHeader from "./MajorSectionHeader";
 import { NtpBackgroundPositionSelect } from "../../../fields/imageField/NtpBackgroundPositionSelect";
 import { NtpBackgroundRepeatAndLogo } from "../../../fields/imageField/NtpBackgroundRepeatAndLogo";
-import { useTheme } from "../../../../store/themeStore";
+import MajorSectionHeader from "./MajorSectionHeader";
 
 export default function ImagesSection() {
   const { state } = useTheme();

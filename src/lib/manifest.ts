@@ -1,4 +1,4 @@
-import { ThemeState } from "../types/theme";
+import type { ThemeState } from "../types/theme";
 
 export function buildManifest(state: ThemeState) {
   const { name, version, images, colors, properties } = state;
@@ -28,8 +28,10 @@ export function buildManifest(state: ThemeState) {
   // tints removed
 
   const props: any = {};
-  if (properties?.ntp_background_alignment) props.ntp_background_alignment = properties.ntp_background_alignment;
-  if (properties?.ntp_background_repeat) props.ntp_background_repeat = properties.ntp_background_repeat;
+  if (properties?.ntp_background_alignment)
+    props.ntp_background_alignment = properties.ntp_background_alignment;
+  if (properties?.ntp_background_repeat)
+    props.ntp_background_repeat = properties.ntp_background_repeat;
   if (Object.keys(props).length) m.theme.properties = props;
 
   return m;

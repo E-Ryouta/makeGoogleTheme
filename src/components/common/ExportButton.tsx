@@ -22,7 +22,10 @@ async function convertToPngBytes(blob: Blob): Promise<Uint8Array> {
     if (!ctx) throw new Error("Canvas 2D context unavailable");
     ctx.drawImage(img, 0, 0);
     const pngBlob: Blob = await new Promise((resolve, reject) =>
-      canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("toBlob failed"))), "image/png"),
+      canvas.toBlob(
+        (b) => (b ? resolve(b) : reject(new Error("toBlob failed"))),
+        "image/png",
+      ),
     );
     const buf = await pngBlob.arrayBuffer();
     return new Uint8Array(buf);
@@ -44,8 +47,14 @@ export function ExportButton() {
 
     // Collect all present images, convert to PNG, and store them under deterministic names
     const images = state.images;
-    const present: [keyof ThemeState["images"], NonNullable<ThemeState["images"][keyof ThemeState["images"]]>][] = (
-      Object.entries(images) as [keyof ThemeState["images"], ThemeState["images"][keyof ThemeState["images"]]][]
+    const present: [
+      keyof ThemeState["images"],
+      NonNullable<ThemeState["images"][keyof ThemeState["images"]]>,
+    ][] = (
+      Object.entries(images) as [
+        keyof ThemeState["images"],
+        ThemeState["images"][keyof ThemeState["images"]],
+      ][]
     )
       .filter(([, v]) => Boolean(v))
       .map(([k, v]) => [k, v!]);

@@ -1,5 +1,5 @@
 import type React from "react";
-import { ColorProps } from "../../../../types/types";
+import type { ColorProps } from "../../../../types/types";
 import { SearchBox } from "./SearchBox";
 import { Shortcuts } from "./Shortcuts";
 

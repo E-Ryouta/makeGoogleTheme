@@ -1,14 +1,14 @@
 import { Box } from "@mantine/core";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
+import { CANVAS, METRICS, NTP } from "../../../constants/ui";
 import { useThemeColors } from "../../../hooks/useThemeColors";
 import { useThemeImages } from "../../../hooks/useThemeImages";
 import { useTheme } from "../../../store/themeStore";
-import { CANVAS, NTP, METRICS } from "../../../constants/ui";
-import { TabStrip } from "./components/TabStrip";
-import { Toolbar } from "./components/Toolbar";
 import { BookmarksBar } from "./components/BookmarksBar";
 import { NewTabPage } from "./components/NewTabPage";
+import { TabStrip } from "./components/TabStrip";
+import { Toolbar } from "./components/Toolbar";
 
 export default function PreviewPanel() {
   const { state } = useTheme();

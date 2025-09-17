@@ -13,7 +13,10 @@ export async function dataURLToBlob(dataUrl: string): Promise<Blob> {
 }
 
 export function triggerDownload(filename: string, data: Blob | string) {
-  const blob = typeof data === "string" ? new Blob([data], { type: "application/octet-stream" }) : data;
+  const blob =
+    typeof data === "string"
+      ? new Blob([data], { type: "application/octet-stream" })
+      : data;
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -23,4 +26,3 @@ export function triggerDownload(filename: string, data: Blob | string) {
   a.remove();
   URL.revokeObjectURL(url);
 }
-

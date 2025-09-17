@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo, useReducer } from "react";
-import type { RGB, RGBA, ThemeState } from "../types/theme";
 import type { FileRef } from "../types/fileRef";
+import type { RGB, RGBA, ThemeState } from "../types/theme";
+
 // setSelectedSlot and SlotKey have been removed from the store
 
 type Action =

@@ -1,4 +1,4 @@
-import { FileRef } from "./fileRef";
+import type { FileRef } from "./fileRef";
 
 export type RGB = [number, number, number]; // 0–255
 export type RGBA = [number, number, number, number]; // 0–255 + alpha 0–1

@@ -1,4 +1,4 @@
-import { RGB } from "../types/theme";
+import type { RGB } from "../types/theme";
 
 export function rgbToHex(rgb?: RGB): string {
   if (!rgb) return "";
@@ -27,7 +27,7 @@ export function hexToRgb(hex: string): RGB | undefined {
 
 function srgbToLinear(v: number): number {
   v /= 255;
-  return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
 }
 
 function relativeLuminance([r, g, b]: RGB): number {
@@ -56,6 +56,6 @@ export function colorToCss(c?: any): string {
     const bb = Math.max(0, Math.min(255, b));
     const aa = Math.max(0, Math.min(1, a));
     return `rgba(${rr}, ${gg}, ${bb}, ${aa})`;
-    }
+  }
   return rgbToHex(c as RGB);
 }

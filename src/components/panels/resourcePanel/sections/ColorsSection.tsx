@@ -1,7 +1,7 @@
 import { Stack } from "@mantine/core";
 import ColorField from "../../../fields/ColorField";
-import SectionHeader from "./SectionHeader";
 import MajorSectionHeader from "./MajorSectionHeader";
+import SectionHeader from "./SectionHeader";
 
 export default function ColorsSection() {
   return (

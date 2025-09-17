@@ -40,8 +40,14 @@ function writeUint16LE(view: DataView, offset: number, value: number) {
   view.setUint16(offset, value & 0xffff, true);
 }
 
-export async function createZip(files: { name: string; data: Uint8Array }[]): Promise<Blob> {
-  const entries: ZipEntry[] = files.map((f) => ({ name: f.name, data: f.data, crc32: crc32(f.data) }));
+export async function createZip(
+  files: { name: string; data: Uint8Array }[],
+): Promise<Blob> {
+  const entries: ZipEntry[] = files.map((f) => ({
+    name: f.name,
+    data: f.data,
+    crc32: crc32(f.data),
+  }));
   const fileRecords: Uint8Array[] = [];
   const centralRecords: Uint8Array[] = [];
 
@@ -104,7 +110,11 @@ export async function createZip(files: { name: string; data: Uint8Array }[]): Pr
   writeUint32LE(eocd, 16, centralOffset);
   writeUint16LE(eocd, 20, 0); // comment length
 
-  const parts: Uint8Array[] = [...fileRecords, ...centralRecords, new Uint8Array(endRecord)];
+  const parts: Uint8Array[] = [
+    ...fileRecords,
+    ...centralRecords,
+    new Uint8Array(endRecord),
+  ];
   const total = parts.reduce((s, p) => s + p.byteLength, 0);
   const out = new Uint8Array(total);
   let ptr = 0;
@@ -114,4 +124,3 @@ export async function createZip(files: { name: string; data: Uint8Array }[]): Pr
   }
   return new Blob([out], { type: "application/zip" });
 }
-

@@ -1,5 +1,5 @@
-import type { RGB, RGBA } from "../../../../types/theme";
 import { colorToCss } from "../../../../lib/color";
+import type { RGB, RGBA } from "../../../../types/theme";
 
 type WindowControlsProps = {
   /** ウィンドウボタンの背景色 */

@@ -1,5 +1,5 @@
-import { SEARCH_BOX } from "../../../../constants/ui";
 import { Search } from "lucide-react";
+import { SEARCH_BOX } from "../../../../constants/ui";
 
 /**
  * 検索ボックスコンポーネント

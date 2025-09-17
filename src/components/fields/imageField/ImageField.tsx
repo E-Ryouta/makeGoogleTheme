@@ -1,9 +1,9 @@
 import { ActionIcon, Button, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { setImageWithMeta, useTheme } from "../../../store/themeStore";
-import { TrashIcon } from "../../icons/TrashIcon";
-import type { ThemeState } from "../../../types/theme";
 import type { Action } from "../../../types/action";
 import type { FileRef } from "../../../types/fileRef";
+import type { ThemeState } from "../../../types/theme";
+import { TrashIcon } from "../../icons/TrashIcon";
 
 export function ImageField({
   label,

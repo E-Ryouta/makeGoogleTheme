@@ -1,5 +1,5 @@
+import { Folder, Grid2x2 } from "lucide-react";
 import { METRICS } from "../../../../constants/ui";
-import { Grid2x2, Folder } from "lucide-react";
 import type { ColorProps, ImageProps } from "../../../../types/types";
 
 type BookmarksBarProps = Pick<

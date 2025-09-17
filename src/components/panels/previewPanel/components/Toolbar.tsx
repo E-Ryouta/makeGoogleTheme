@@ -1,10 +1,10 @@
 import {
   ArrowLeft,
   ArrowRight,
-  Ellipsis,
   Download,
-  RotateCw,
+  Ellipsis,
   Info,
+  RotateCw,
 } from "lucide-react";
 import { ICON, METRICS } from "../../../../constants/ui";
 import type { ColorProps, ImageProps } from "../../../../types/types";

@@ -20,7 +20,10 @@ export default function SectionHeader({ label }: { label: string }) {
           background: "#228be6",
         }}
       />
-      <Title order={6} style={{ margin: 0 }}> {label} </Title>
+      <Title order={6} style={{ margin: 0 }}>
+        {" "}
+        {label}{" "}
+      </Title>
       <div
         aria-hidden
         style={{ flex: 1, height: 1, background: "#e9ecef", marginLeft: 4 }}
@@ -28,4 +31,3 @@ export default function SectionHeader({ label }: { label: string }) {
     </div>
   );
 }
-

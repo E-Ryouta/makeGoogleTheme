@@ -1,7 +1,7 @@
 import { Stack } from "@mantine/core";
-import MetaSection from "./sections/MetaSection";
-import ImagesSection from "./sections/ImagesSection";
 import ColorsSection from "./sections/ColorsSection";
+import ImagesSection from "./sections/ImagesSection";
+import MetaSection from "./sections/MetaSection";
 
 export default function ResourcePanel() {
   return (

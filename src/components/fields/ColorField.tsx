@@ -1,7 +1,7 @@
 import { Group, Slider, Text, TextInput } from "@mantine/core";
-import { useTheme, setColor } from "../../store/themeStore";
 import { hexToRgb, rgbToHex } from "../../lib/color";
-import { ThemeState, RGB, RGBA } from "../../types/theme";
+import { setColor, useTheme } from "../../store/themeStore";
+import type { RGB, RGBA, ThemeState } from "../../types/theme";
 
 type ColorKey = keyof ThemeState["colors"];
 

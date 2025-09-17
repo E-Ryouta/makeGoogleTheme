@@ -1,5 +1,5 @@
-import type { RGB, RGBA, ThemeState } from "./theme";
 import type { FileRef } from "./fileRef";
+import type { RGB, RGBA, ThemeState } from "./theme";
 
 export type Action =
   | { type: "set_name"; name: string }

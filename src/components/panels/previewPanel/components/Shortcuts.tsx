@@ -1,5 +1,5 @@
 import { SHORTCUT } from "../../../../constants/ui";
-import { ColorProps } from "../../../../types/types";
+import type { ColorProps } from "../../../../types/types";
 
 type ShortcutsProps = Pick<ColorProps, "ntpTextColor">;
 
