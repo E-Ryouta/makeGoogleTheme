@@ -61,7 +61,7 @@ export default function ImagesSection() {
               <Grid.Col span={{ base: 12, sm: 6 }}>
                 <SettingCard
                   title="周辺色の取り込み"
-                  description="画像の外側でよく使われる色を背景色に自動反映します。"
+                  description="画像でよく使われる色を自動反映します。"
                 >
                   <NtpEdgeColorButton />
                 </SettingCard>

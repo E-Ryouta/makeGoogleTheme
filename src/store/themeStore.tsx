@@ -133,7 +133,7 @@ export function setImageWithMeta(
 export function setColor(
   dispatch: React.Dispatch<Action>,
   key: keyof ThemeState["colors"],
-  value?: RGB,
+  value?: RGB | RGBA,
 ) {
   dispatch({ type: "set_color", key, value });
 }
