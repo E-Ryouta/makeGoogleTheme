@@ -14,11 +14,13 @@ export default function PreviewPanel() {
   const { state } = useTheme();
   const colors = useThemeColors();
   const { frameBgUrl, toolbarBgUrl, tabBgUrl, ntpBgUrl } = useThemeImages();
+  const shouldScaleNtpBackground =
+    state.properties.ntp_background_scale_to_cover ?? false;
 
   const ntpStyle: React.CSSProperties = {
     backgroundImage: ntpBgUrl ? `url(${ntpBgUrl})` : undefined,
-    // 実機では画像は実寸で配置される（スケールなし）。
-    backgroundSize: "auto",
+    // デフォルトは実寸、設定に応じてカバー表示を模擬。
+    backgroundSize: shouldScaleNtpBackground ? "cover" : "auto",
     backgroundPosition: (() => {
       const a = state.properties.ntp_background_alignment;
       if (!a) return "center center";

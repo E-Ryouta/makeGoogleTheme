@@ -5,7 +5,17 @@ import { createZip } from "../../lib/zip";
 import { useTheme } from "../../store/themeStore";
 import type { ThemeState } from "../../types/theme";
 
-async function convertToPngBytes(blob: Blob): Promise<Uint8Array> {
+type ConvertToPngOptions = {
+  targetSize?: {
+    width: number;
+    height: number;
+  };
+};
+
+async function convertToPngBytes(
+  blob: Blob,
+  options: ConvertToPngOptions = {},
+): Promise<Uint8Array> {
   // Draw onto a canvas and export as PNG
   const url = URL.createObjectURL(blob);
   try {
@@ -16,11 +26,40 @@ async function convertToPngBytes(blob: Blob): Promise<Uint8Array> {
       i.src = url;
     });
     const canvas = document.createElement("canvas");
-    canvas.width = img.naturalWidth || img.width;
-    canvas.height = img.naturalHeight || img.height;
+    const naturalWidth = img.naturalWidth || img.width;
+    const naturalHeight = img.naturalHeight || img.height;
+
+    if (!naturalWidth || !naturalHeight)
+      throw new Error("Image dimensions unavailable");
+
+    let targetWidth = naturalWidth;
+    let targetHeight = naturalHeight;
+    let drawWidth = naturalWidth;
+    let drawHeight = naturalHeight;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    if (options.targetSize) {
+      targetWidth = options.targetSize.width;
+      targetHeight = options.targetSize.height;
+      const scale = Math.max(
+        targetWidth / naturalWidth,
+        targetHeight / naturalHeight,
+      );
+      drawWidth = naturalWidth * scale;
+      drawHeight = naturalHeight * scale;
+      offsetX = (targetWidth - drawWidth) / 2;
+      offsetY = (targetHeight - drawHeight) / 2;
+    }
+
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+
     const ctx = canvas.getContext("2d");
     if (!ctx) throw new Error("Canvas 2D context unavailable");
-    ctx.drawImage(img, 0, 0);
+
+    ctx.clearRect(0, 0, targetWidth, targetHeight);
+    ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
     const pngBlob: Blob = await new Promise((resolve, reject) =>
       canvas.toBlob(
         (b) => (b ? resolve(b) : reject(new Error("toBlob failed"))),
@@ -59,8 +98,16 @@ export function ExportButton() {
       .filter(([, v]) => Boolean(v))
       .map(([k, v]) => [k, v!]);
 
+    const shouldScaleNtpBackground =
+      state.properties.ntp_background_scale_to_cover ?? false;
+
     for (const [key, fileRef] of present) {
-      const data = await convertToPngBytes(fileRef.blob);
+      const data = await convertToPngBytes(
+        fileRef.blob,
+        key === "theme_ntp_background" && shouldScaleNtpBackground
+          ? { targetSize: { width: 1920, height: 1080 } }
+          : undefined,
+      );
       files.push({ name: `images/${String(key)}.png`, data });
     }
     const blob = await createZip(files);

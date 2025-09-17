@@ -56,6 +56,7 @@ const initialTheme: ThemeState = {
   properties: {
     ntp_background_alignment: "center",
     ntp_background_repeat: "no-repeat",
+    ntp_background_scale_to_cover: false,
   },
 };
 

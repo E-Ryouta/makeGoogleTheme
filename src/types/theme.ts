@@ -57,6 +57,7 @@ export type ThemeState = {
       | "right center"
       | "right bottom";
     ntp_background_repeat?: "no-repeat" | "repeat" | "repeat-x" | "repeat-y";
+    ntp_background_scale_to_cover?: boolean;
   };
   _preview?: {
     fit?: "cover" | "contain" | "auto";
