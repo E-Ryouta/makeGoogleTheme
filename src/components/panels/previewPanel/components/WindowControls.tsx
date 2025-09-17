@@ -29,9 +29,9 @@ export function WindowControls({ buttonColor }: WindowControlsProps) {
         display: "flex",
       }}
     >
-      {buttons.map((button, i) => (
+      {buttons.map((button) => (
         <div
-          key={i}
+          key={button.title}
           title={button.title}
           className="pc-winbtn"
           style={{

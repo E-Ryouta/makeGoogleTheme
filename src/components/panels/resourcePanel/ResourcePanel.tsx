@@ -9,7 +9,6 @@ export default function ResourcePanel() {
       <MetaSection />
       <ImagesSection />
       <ColorsSection />
-      {/* Tints removed */}
     </Stack>
   );
 }

@@ -22,6 +22,7 @@ export function Shortcuts({ ntpTextColor }: ShortcutsProps) {
     >
       {Array.from({ length: SHORTCUT.COUNT }).map((_, i) => (
         <div
+          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
           key={i}
           style={{
             width: SHORTCUT.WIDTH,
