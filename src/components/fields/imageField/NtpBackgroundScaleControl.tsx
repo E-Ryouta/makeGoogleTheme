@@ -1,4 +1,4 @@
-import { Button, Stack, Text } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 
 export type NtpBackgroundScaleControlProps = {
   shouldScale: boolean;
@@ -11,9 +11,6 @@ export function NtpBackgroundScaleControl({
 }: NtpBackgroundScaleControlProps) {
   return (
     <Stack gap="xs">
-      <Text size="sm" fw={500}>
-        アスペクト比に合わせた拡大
-      </Text>
       <Button.Group>
         <Button
           variant={shouldScale ? "filled" : "outline"}

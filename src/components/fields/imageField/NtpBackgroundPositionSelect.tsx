@@ -2,12 +2,18 @@ import { Select } from "@mantine/core";
 import { setProperty, useTheme } from "../../../store/themeStore";
 import type { ThemeState } from "../../../types/theme";
 
-export function NtpBackgroundPositionSelect() {
+export type NtpBackgroundPositionSelectProps = {
+  label?: string | null;
+};
+
+export function NtpBackgroundPositionSelect({
+  label = "配置",
+}: NtpBackgroundPositionSelectProps) {
   const { state, dispatch } = useTheme();
 
   return (
     <Select
-      label="配置"
+      label={typeof label === "string" ? label : undefined}
       data={[
         { label: "中央", value: "center" },
         { label: "左", value: "left" },

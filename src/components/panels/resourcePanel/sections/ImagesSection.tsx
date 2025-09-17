@@ -1,10 +1,12 @@
 import { Grid, Paper, Stack } from "@mantine/core";
+import { SettingCard } from "../../../common/SettingCard";
 import { setProperty, useTheme } from "../../../../store/themeStore";
 import { ImageField } from "../../../fields/imageField/ImageField";
 import { NtpBackgroundPositionSelect } from "../../../fields/imageField/NtpBackgroundPositionSelect";
 import { NtpBackgroundRepeatAndLogo } from "../../../fields/imageField/NtpBackgroundRepeatAndLogo";
 import MajorSectionHeader from "./MajorSectionHeader";
-import { NtpBackgroundScaleControl } from "./NtpBackgroundScaleControl";
+import { NtpBackgroundScaleControl } from "../../../fields/imageField/NtpBackgroundScaleControl";
+import { NtpEdgeColorButton } from "../../../fields/imageField/NtpEdgeColorButton";
 
 export default function ImagesSection() {
   const { state, dispatch } = useTheme();
@@ -30,16 +32,41 @@ export default function ImagesSection() {
           <Stack gap="md">
             <Grid>
               <Grid.Col span={{ base: 12, sm: 6 }}>
-                <NtpBackgroundPositionSelect />
+                <SettingCard
+                  title="表示位置"
+                  description="背景画像を表示する基準を選択します。"
+                >
+                  <NtpBackgroundPositionSelect label={null} />
+                </SettingCard>
               </Grid.Col>
               <Grid.Col span={{ base: 12, sm: 6 }}>
-                <NtpBackgroundRepeatAndLogo />
+                <SettingCard
+                  title="繰り返し"
+                  description="背景画像のタイル表示を指定します。"
+                >
+                  <NtpBackgroundRepeatAndLogo label={null} />
+                </SettingCard>
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, sm: 6 }}>
+                <SettingCard
+                  title="拡大・縮小"
+                  description="背景画像をホーム画面全体に広げるかどうかを設定します。"
+                >
+                  <NtpBackgroundScaleControl
+                    shouldScale={shouldScaleNtpBackground}
+                    onChange={handleSetNtpScaling}
+                  />
+                </SettingCard>
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, sm: 6 }}>
+                <SettingCard
+                  title="周辺色の取り込み"
+                  description="画像の外側でよく使われる色を背景色に自動反映します。"
+                >
+                  <NtpEdgeColorButton />
+                </SettingCard>
               </Grid.Col>
             </Grid>
-            <NtpBackgroundScaleControl
-              shouldScale={shouldScaleNtpBackground}
-              onChange={handleSetNtpScaling}
-            />
           </Stack>
         </Paper>
       )}
