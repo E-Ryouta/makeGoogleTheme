@@ -1,4 +1,5 @@
 import { ActionIcon, Button, Group, Stack, Text, Tooltip } from "@mantine/core";
+import type { ReactNode } from "react";
 import { setImageWithMeta, useTheme } from "../../../store/themeStore";
 import type { Action } from "../../../types/action";
 import type { FileRef } from "../../../types/fileRef";
@@ -8,9 +9,11 @@ import { TrashIcon } from "../../icons/TrashIcon";
 export function ImageField({
   label,
   imageKey,
+  actionSlot,
 }: {
   label: string;
   imageKey: keyof ThemeState["images"];
+  actionSlot?: ReactNode;
 }) {
   const { state, dispatch } = useTheme();
   const current = state.images[imageKey];
@@ -29,6 +32,7 @@ export function ImageField({
           <InputImageButton dispatch={dispatch} imageKey={imageKey} />
         )}
       </Group>
+      {actionSlot}
     </Stack>
   );
 }

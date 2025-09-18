@@ -1,15 +1,19 @@
-import { Grid, Paper, Stack } from "@mantine/core";
-import { SettingCard } from "../../../common/SettingCard";
+import { Button, Grid, Paper, Stack } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { setProperty, useTheme } from "../../../../store/themeStore";
+import { SettingCard } from "../../../common/SettingCard";
 import { ImageField } from "../../../fields/imageField/ImageField";
+import { NtpBackgroundEditorModal } from "../../../fields/imageField/NtpBackgroundEditorModal";
 import { NtpBackgroundPositionSelect } from "../../../fields/imageField/NtpBackgroundPositionSelect";
 import { NtpBackgroundRepeatAndLogo } from "../../../fields/imageField/NtpBackgroundRepeatAndLogo";
-import MajorSectionHeader from "./MajorSectionHeader";
 import { NtpBackgroundScaleControl } from "../../../fields/imageField/NtpBackgroundScaleControl";
 import { NtpEdgeColorButton } from "../../../fields/imageField/NtpEdgeColorButton";
+import MajorSectionHeader from "./MajorSectionHeader";
 
 export default function ImagesSection() {
   const { state, dispatch } = useTheme();
+  const [editorOpened, { open: openEditor, close: closeEditor }] =
+    useDisclosure(false);
   const hasNtpBackground = Boolean(state.images.theme_ntp_background);
   const shouldScaleNtpBackground =
     state.properties.ntp_background_scale_to_cover ?? false;
@@ -26,6 +30,11 @@ export default function ImagesSection() {
       <ImageField
         label="ホーム画面の背景画像"
         imageKey="theme_ntp_background"
+        actionSlot={
+          <Button variant="default" size="xs" onClick={openEditor}>
+            背景画像を編集する
+          </Button>
+        }
       />
       {hasNtpBackground && (
         <Paper withBorder p="md" radius="md">
@@ -70,6 +79,12 @@ export default function ImagesSection() {
           </Stack>
         </Paper>
       )}
+      <NtpBackgroundEditorModal
+        opened={editorOpened}
+        onClose={closeEditor}
+        dispatch={dispatch}
+        current={state.images.theme_ntp_background}
+      />
     </Stack>
   );
 }

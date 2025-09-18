@@ -239,15 +239,14 @@ export async function getEdgeColorSuggestions(
 
     const secondarySwatch = palette
       .slice(1)
-      .find((swatch) => colorDistance(background, swatch.color) >= MIN_SECONDARY_DISTANCE);
+      .find(
+        (swatch) =>
+          colorDistance(background, swatch.color) >= MIN_SECONDARY_DISTANCE,
+      );
 
     let secondary = secondarySwatch?.color;
     if (!secondary) {
-      const targetL = clamp(
-        baseL + (baseL < 0.5 ? 0.23 : -0.23),
-        0.12,
-        0.88,
-      );
+      const targetL = clamp(baseL + (baseL < 0.5 ? 0.23 : -0.23), 0.12, 0.88);
       const targetS = clamp(baseS * 0.85 + 0.05, 0.1, 1);
       secondary = hslToRgb(baseH, targetS, targetL);
     }

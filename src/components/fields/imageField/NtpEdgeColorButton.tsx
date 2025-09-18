@@ -1,8 +1,8 @@
 import { Button, Stack } from "@mantine/core";
 import { useEffect, useState } from "react";
 import {
-  getEdgeColorSuggestions,
   type EdgeColorSuggestions,
+  getEdgeColorSuggestions,
 } from "../../../lib/imageColors";
 import { setColor, useTheme } from "../../../store/themeStore";
 import type { RGB, RGBA, ThemeState } from "../../../types/theme";
