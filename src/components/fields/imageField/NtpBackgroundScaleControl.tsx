@@ -1,4 +1,4 @@
-import { Button, Stack, Text } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 
 export type NtpBackgroundScaleControlProps = {
   shouldScale: boolean;
