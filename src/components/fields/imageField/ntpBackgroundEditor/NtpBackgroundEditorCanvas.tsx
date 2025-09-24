@@ -118,7 +118,7 @@ export function NtpBackgroundEditorCanvas({
   return (
     <Stack gap="sm">
       <Group justify="space-between">
-        <Group gap="xs">
+        <Group gap="xs" style={{ alignSelf: "flex-end" }}>
           <Button
             component="label"
             variant="light"
