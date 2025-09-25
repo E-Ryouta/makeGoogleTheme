@@ -1,4 +1,5 @@
 import { ActionIcon, Button, Group, Stack, Text, Tooltip } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 import type { ReactNode } from "react";
 import { setImageWithMeta, useTheme } from "../../../store/themeStore";
 import type { Action } from "../../../types/action";
@@ -46,6 +47,7 @@ const DeleteImageButton = ({
   dispatch: React.Dispatch<Action>;
   imageKey: keyof ThemeState["images"];
 }) => {
+  const { t } = useTranslation();
   return (
     <Group gap="xs">
       <Text size="sm" c="dimmed">
@@ -54,12 +56,12 @@ const DeleteImageButton = ({
           ? `(${current.width}×${current.height})`
           : ""}
       </Text>
-      <Tooltip label="画像を削除" openDelay={300}>
+      <Tooltip label={t("imageField.deleteTooltip")} openDelay={300}>
         <ActionIcon
           variant="light"
           color="red"
           size="sm"
-          aria-label="画像を削除"
+          aria-label={t("imageField.deleteAria")}
           onClick={() => {
             dispatch({ type: "set_image", key: imageKey, value: undefined });
           }}
@@ -78,9 +80,10 @@ const InputImageButton = ({
   dispatch: React.Dispatch<Action>;
   imageKey: keyof ThemeState["images"];
 }) => {
+  const { t } = useTranslation();
   return (
     <Button component="label" variant="light" size="xs">
-      画像を選択する
+      {t("imageField.select")}
       <input
         hidden
         type="file"

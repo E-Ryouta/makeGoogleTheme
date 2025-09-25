@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
+import "./i18n";
 import { ThemeProvider } from "./store/themeStore";
 import { theme } from "./theme";
 

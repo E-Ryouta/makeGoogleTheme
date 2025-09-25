@@ -1,5 +1,6 @@
 import { Button, Grid, Paper, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { useTranslation } from "react-i18next";
 import { setProperty, useTheme } from "../../../../store/themeStore";
 import { SettingCard } from "../../../common/SettingCard";
 import { ImageField } from "../../../fields/imageField/ImageField";
@@ -12,6 +13,7 @@ import MajorSectionHeader from "./MajorSectionHeader";
 
 export default function ImagesSection() {
   const { state, dispatch } = useTheme();
+  const { t } = useTranslation();
   const [editorOpened, { open: openEditor, close: closeEditor }] =
     useDisclosure(false);
   const hasNtpBackground = Boolean(state.images.theme_ntp_background);
@@ -23,16 +25,25 @@ export default function ImagesSection() {
   };
   return (
     <Stack>
-      <MajorSectionHeader label="画像" />
-      <ImageField label="フレームの背景画像" imageKey="theme_frame" />
-      <ImageField label="ツールバーの背景画像" imageKey="theme_toolbar" />
-      <ImageField label="タブの背景画像" imageKey="theme_tab_background" />
+      <MajorSectionHeader label={t("images.title")} />
       <ImageField
-        label="ホーム画面の背景画像"
+        label={t("images.frameBackground")}
+        imageKey="theme_frame"
+      />
+      <ImageField
+        label={t("images.toolbarBackground")}
+        imageKey="theme_toolbar"
+      />
+      <ImageField
+        label={t("images.tabBackground")}
+        imageKey="theme_tab_background"
+      />
+      <ImageField
+        label={t("images.ntpBackground")}
         imageKey="theme_ntp_background"
         actionSlot={
           <Button variant="default" size="xs" onClick={openEditor}>
-            背景画像を編集する
+            {t("images.editBackground")}
           </Button>
         }
       />
@@ -42,24 +53,24 @@ export default function ImagesSection() {
             <Grid>
               <Grid.Col span={{ base: 12, sm: 6 }}>
                 <SettingCard
-                  title="表示位置"
-                  description="背景画像を表示する基準を選択します。"
+                  title={t("images.positionTitle")}
+                  description={t("images.positionDescription")}
                 >
                   <NtpBackgroundPositionSelect label={null} />
                 </SettingCard>
               </Grid.Col>
               <Grid.Col span={{ base: 12, sm: 6 }}>
                 <SettingCard
-                  title="繰り返し"
-                  description="背景画像のタイル表示を指定します。"
+                  title={t("images.repeatTitle")}
+                  description={t("images.repeatDescription")}
                 >
                   <NtpBackgroundRepeatAndLogo label={null} />
                 </SettingCard>
               </Grid.Col>
               <Grid.Col span={{ base: 12, sm: 6 }}>
                 <SettingCard
-                  title="拡大・縮小"
-                  description="背景画像をホーム画面全体に広げるかどうかを設定します。"
+                  title={t("images.scaleTitle")}
+                  description={t("images.scaleDescription")}
                 >
                   <NtpBackgroundScaleControl
                     shouldScale={shouldScaleNtpBackground}
@@ -69,8 +80,8 @@ export default function ImagesSection() {
               </Grid.Col>
               <Grid.Col span={{ base: 12, sm: 6 }}>
                 <SettingCard
-                  title="周辺色の取り込み"
-                  description="画像でよく使われる色を自動反映します。"
+                  title={t("images.edgeTitle")}
+                  description={t("images.edgeDescription")}
                 >
                   <NtpEdgeColorButton />
                 </SettingCard>

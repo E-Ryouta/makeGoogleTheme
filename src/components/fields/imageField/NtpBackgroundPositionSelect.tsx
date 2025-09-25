@@ -1,4 +1,6 @@
 import { Select } from "@mantine/core";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { setProperty, useTheme } from "../../../store/themeStore";
 import type { ThemeState } from "../../../types/theme";
 
@@ -7,28 +9,37 @@ export type NtpBackgroundPositionSelectProps = {
 };
 
 export function NtpBackgroundPositionSelect({
-  label = "配置",
+  label,
 }: NtpBackgroundPositionSelectProps) {
   const { state, dispatch } = useTheme();
+  const { t } = useTranslation();
+
+  const options = useMemo(
+    () => [
+      { label: t("ntpPosition.options.center"), value: "center" },
+      { label: t("ntpPosition.options.left"), value: "left" },
+      { label: t("ntpPosition.options.right"), value: "right" },
+      { label: t("ntpPosition.options.top"), value: "top" },
+      { label: t("ntpPosition.options.bottom"), value: "bottom" },
+      { label: t("ntpPosition.options.leftTop"), value: "left top" },
+      { label: t("ntpPosition.options.leftBottom"), value: "left bottom" },
+      { label: t("ntpPosition.options.rightTop"), value: "right top" },
+      { label: t("ntpPosition.options.rightBottom"), value: "right bottom" },
+      { label: t("ntpPosition.options.leftCenter"), value: "left center" },
+      { label: t("ntpPosition.options.rightCenter"), value: "right center" },
+      { label: t("ntpPosition.options.centerTop"), value: "center top" },
+      { label: t("ntpPosition.options.centerBottom"), value: "center bottom" },
+    ],
+    [t],
+  );
+
+  const translatedLabel =
+    label === null ? undefined : label ?? t("ntpPosition.label");
 
   return (
     <Select
-      label={typeof label === "string" ? label : undefined}
-      data={[
-        { label: "中央", value: "center" },
-        { label: "左", value: "left" },
-        { label: "右", value: "right" },
-        { label: "上", value: "top" },
-        { label: "下", value: "bottom" },
-        { label: "左上", value: "left top" },
-        { label: "左下", value: "left bottom" },
-        { label: "右上", value: "right top" },
-        { label: "右下", value: "right bottom" },
-        { label: "左中央", value: "left center" },
-        { label: "右中央", value: "right center" },
-        { label: "中央上", value: "center top" },
-        { label: "中央下", value: "center bottom" },
-      ]}
+      label={translatedLabel}
+      data={options}
       value={state.properties.ntp_background_alignment}
       onChange={(v) =>
         setProperty(

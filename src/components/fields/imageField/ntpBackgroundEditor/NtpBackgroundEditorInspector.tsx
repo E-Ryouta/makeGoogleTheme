@@ -9,6 +9,7 @@ import {
   Text,
 } from "@mantine/core";
 import { FlipHorizontal, FlipVertical, RefreshCcw } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import type { EditorLayer, LayerCropSide } from "./editorLayerModel";
 
 type NtpBackgroundEditorInspectorProps = {
@@ -35,10 +36,11 @@ export function NtpBackgroundEditorInspector({
   onChangeCrop,
   onReset,
 }: NtpBackgroundEditorInspectorProps) {
+  const { t } = useTranslation();
   return (
     <Stack gap="sm">
       <Text fw={600} size="sm">
-        選択中: {layer.name}
+        {t("ntpEditor.inspector.selected", { name: layer.name })}
       </Text>
       <Group gap="xs" grow>
         <Box w={110}>
@@ -69,7 +71,9 @@ export function NtpBackgroundEditorInspector({
       <Stack gap={4}>
         <Group justify="space-between">
           <Text size="xs" c="dimmed">
-            拡大率 ( {layer.scale.toFixed(2)} )
+            {t("ntpEditor.inspector.scale", {
+              value: layer.scale.toFixed(2),
+            })}
           </Text>
         </Group>
         <Slider
@@ -83,7 +87,9 @@ export function NtpBackgroundEditorInspector({
       <Stack gap={4}>
         <Group justify="space-between">
           <Text size="xs" c="dimmed">
-            不透明度 ( {Math.round(layer.opacity * 100)}% )
+            {t("ntpEditor.inspector.opacity", {
+              value: Math.round(layer.opacity * 100),
+            })}
           </Text>
         </Group>
         <Slider
@@ -97,7 +103,9 @@ export function NtpBackgroundEditorInspector({
       <Stack gap={4}>
         <Group justify="space-between">
           <Text size="xs" c="dimmed">
-            回転 ({Math.round((layer.rotation * 180) / Math.PI)}°)
+            {t("ntpEditor.inspector.rotation", {
+              value: Math.round((layer.rotation * 180) / Math.PI),
+            })}
           </Text>
         </Group>
         <Slider
@@ -110,7 +118,7 @@ export function NtpBackgroundEditorInspector({
       </Stack>
       <Stack gap={4}>
         <Text size="xs" c="dimmed">
-          反転
+          {t("ntpEditor.inspector.flip")}
         </Text>
         <Group gap="xs">
           <ActionIcon
@@ -118,7 +126,7 @@ export function NtpBackgroundEditorInspector({
             color={layer.flipHorizontal ? "blue" : undefined}
             size="sm"
             onClick={() => onToggleFlip(layer.id, "horizontal")}
-            aria-label="左右反転"
+            aria-label={t("ntpEditor.inspector.flipHorizontal")}
           >
             <FlipHorizontal size={16} />
           </ActionIcon>
@@ -127,29 +135,29 @@ export function NtpBackgroundEditorInspector({
             color={layer.flipVertical ? "blue" : undefined}
             size="sm"
             onClick={() => onToggleFlip(layer.id, "vertical")}
-            aria-label="上下反転"
+            aria-label={t("ntpEditor.inspector.flipVertical")}
           >
             <FlipVertical size={16} />
           </ActionIcon>
         </Group>
       </Stack>
       <CropSlider
-        label="切り抜き (左)"
+        label={t("ntpEditor.inspector.cropLeft")}
         value={layer.crop.left}
         onChange={(value) => onChangeCrop(layer.id, "left", value)}
       />
       <CropSlider
-        label="切り抜き (右)"
+        label={t("ntpEditor.inspector.cropRight")}
         value={layer.crop.right}
         onChange={(value) => onChangeCrop(layer.id, "right", value)}
       />
       <CropSlider
-        label="切り抜き (上)"
+        label={t("ntpEditor.inspector.cropTop")}
         value={layer.crop.top}
         onChange={(value) => onChangeCrop(layer.id, "top", value)}
       />
       <CropSlider
-        label="切り抜き (下)"
+        label={t("ntpEditor.inspector.cropBottom")}
         value={layer.crop.bottom}
         onChange={(value) => onChangeCrop(layer.id, "bottom", value)}
       />
@@ -160,7 +168,7 @@ export function NtpBackgroundEditorInspector({
           leftSection={<RefreshCcw size={16} />}
           onClick={() => onReset(layer.id)}
         >
-          レイヤーをリセット
+          {t("ntpEditor.inspector.reset")}
         </Button>
       </Group>
     </Stack>

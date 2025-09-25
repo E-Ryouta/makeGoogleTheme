@@ -1,4 +1,6 @@
 import { Box, Select } from "@mantine/core";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { setProperty, useTheme } from "../../../store/themeStore";
 import type { ThemeState } from "../../../types/theme";
 
@@ -7,20 +9,28 @@ export type NtpBackgroundRepeatAndLogoProps = {
 };
 
 export function NtpBackgroundRepeatAndLogo({
-  label = "繰り返し",
+  label,
 }: NtpBackgroundRepeatAndLogoProps) {
   const { state, dispatch } = useTheme();
+  const { t } = useTranslation();
+
+  const options = useMemo(
+    () => [
+      { label: t("ntpRepeat.options.noRepeat"), value: "no-repeat" },
+      { label: t("ntpRepeat.options.repeat"), value: "repeat" },
+      { label: t("ntpRepeat.options.repeatX"), value: "repeat-x" },
+      { label: t("ntpRepeat.options.repeatY"), value: "repeat-y" },
+    ],
+    [t],
+  );
+
+  const translatedLabel = label === null ? undefined : label ?? t("ntpRepeat.label");
 
   return (
     <Box>
       <Select
-        label={typeof label === "string" ? label : undefined}
-        data={[
-          { label: "繰り返さない", value: "no-repeat" },
-          { label: "縦横ともに繰り返す", value: "repeat" },
-          { label: "水平方向のみ", value: "repeat-x" },
-          { label: "垂直方向のみ", value: "repeat-y" },
-        ]}
+        label={translatedLabel}
+        data={options}
         value={state.properties.ntp_background_repeat}
         onChange={(v) =>
           setProperty(

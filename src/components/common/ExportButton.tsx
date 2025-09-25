@@ -1,4 +1,5 @@
 import { Button } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 import { triggerDownload } from "../../lib/file";
 import { buildManifest } from "../../lib/manifest";
 import { createZip } from "../../lib/zip";
@@ -76,6 +77,7 @@ async function convertToPngBytes(
 export function ExportButton() {
   const { state } = useTheme();
   const manifest = buildManifest(state);
+  const { t } = useTranslation();
 
   async function handleDownloadZip() {
     const files: { name: string; data: Uint8Array }[] = [];
@@ -113,6 +115,5 @@ export function ExportButton() {
     const blob = await createZip(files);
     triggerDownload(`${state.name || "theme"}.zip`, blob);
   }
-
-  return <Button onClick={handleDownloadZip}>Download ZIP</Button>;
+  return <Button onClick={handleDownloadZip}>{t("export.download")}</Button>;
 }

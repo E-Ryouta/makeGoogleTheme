@@ -1,6 +1,7 @@
 import { ActionIcon, Box, Group, Modal, Text } from "@mantine/core";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type RevertGuideModalProps = {
   opened: boolean;
@@ -8,27 +9,28 @@ type RevertGuideModalProps = {
 };
 
 export function RevertGuideModal({ opened, onClose }: RevertGuideModalProps) {
-  const steps: {
-    title: string;
-    body: React.ReactNode;
-    imageSrc?: string;
-    imageAlt?: string;
-  }[] = [
-    {
-      title: "デフォルトのテーマカスタマイズを表示",
-      body: <Text>ホーム画面からChromeをカスタマイズをクリック</Text>,
-      imageSrc: "/revert/revert1.png",
-    },
-    {
-      title: "テーマ一覧を表示",
-      body: <Text>テーマを変更を選択</Text>,
-      imageSrc: "/revert/revert2.png",
-    },
-    {
-      title: "デフォルトのテーマを設定",
-      body: <Text>デフォルトのChromeを選択</Text>,
-    },
-  ];
+  const { t } = useTranslation();
+  const steps = useMemo(
+    () => [
+      {
+        title: t("revertGuide.steps.openCustomize.title"),
+        body: <Text>{t("revertGuide.steps.openCustomize.body")}</Text>,
+        imageSrc: "/revert/revert1.png",
+        imageAlt: t("revertGuide.steps.openCustomize.title"),
+      },
+      {
+        title: t("revertGuide.steps.showThemes.title"),
+        body: <Text>{t("revertGuide.steps.showThemes.body")}</Text>,
+        imageSrc: "/revert/revert2.png",
+        imageAlt: t("revertGuide.steps.showThemes.title"),
+      },
+      {
+        title: t("revertGuide.steps.setDefault.title"),
+        body: <Text>{t("revertGuide.steps.setDefault.body")}</Text>,
+      },
+    ],
+    [t],
+  );
 
   const [step, setStep] = useState(0);
   const total = steps.length;
@@ -44,7 +46,7 @@ export function RevertGuideModal({ opened, onClose }: RevertGuideModalProps) {
         setStep(0);
         onClose();
       }}
-      title="元に戻す方法"
+      title={t("revertGuide.title")}
       centered
     >
       <Text fw={600} mb="xs">
@@ -78,7 +80,7 @@ export function RevertGuideModal({ opened, onClose }: RevertGuideModalProps) {
           variant="default"
           onClick={goPrev}
           disabled={!canPrev}
-          aria-label="前へ"
+          aria-label={t("revertGuide.ariaPrev")}
         >
           <ArrowLeft size={18} />
         </ActionIcon>
@@ -89,14 +91,14 @@ export function RevertGuideModal({ opened, onClose }: RevertGuideModalProps) {
           variant="default"
           onClick={goNext}
           disabled={!canNext}
-          aria-label="次へ"
+          aria-label={t("revertGuide.ariaNext")}
         >
           <ArrowRight size={18} />
         </ActionIcon>
       </Group>
 
       <Text size="sm" c="dimmed" mt="md">
-        Chromeの設定「外観」からテーマを既定に戻すこともできます。
+        {t("revertGuide.footer")}
       </Text>
     </Modal>
   );

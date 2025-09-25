@@ -1,0 +1,184 @@
+{
+  "header": {
+    "title": "Chrome Theme Builder",
+    "applyGuide": "適用方法",
+    "revertGuide": "戻す方法",
+    "languageLabel": "言語",
+    "languageOptions": {
+      "en": "英語",
+      "ja": "日本語"
+    }
+  },
+  "export": {
+    "download": "ZIPをダウンロード"
+  },
+  "meta": {
+    "themeName": "テーマ名"
+  },
+  "images": {
+    "title": "画像",
+    "frameBackground": "フレームの背景画像",
+    "toolbarBackground": "ツールバーの背景画像",
+    "tabBackground": "タブの背景画像",
+    "ntpBackground": "ホーム画面の背景画像",
+    "editBackground": "背景画像を編集する",
+    "positionTitle": "表示位置",
+    "positionDescription": "背景画像を表示する基準を選択。",
+    "repeatTitle": "繰り返し",
+    "repeatDescription": "背景画像のタイル表示を指定します。",
+    "scaleTitle": "拡大・縮小",
+    "scaleDescription": "背景画像をホーム画面全体に広げるかどうかを設定します。",
+    "edgeTitle": "周辺色の取り込み",
+    "edgeDescription": "画像でよく使われる色を自動反映します。"
+  },
+  "colors": {
+    "title": "色",
+    "frame": "フレーム",
+    "frameButton": "フレーム (ボタン)",
+    "toolbar": "ツールバー",
+    "toolbarBackground": "ツールバー（背景）",
+    "toolbarText": "ツールバー（文字）",
+    "toolbarButton": "ツールバー (ボタン)",
+    "bookmarks": "ブックマーク",
+    "bookmarkText": "ブックマーク（文字）",
+    "homepage": "ホームページ",
+    "homepageBackground": "ホームページ (背景)",
+    "homepageText": "ホームページ (文字)",
+    "homepageLink": "ホームページ (リンク)",
+    "omnibox": "オムニボックス",
+    "omniboxBackground": "オムニボックス(背景)",
+    "omniboxText": "オムニボックス(文字)"
+  },
+  "imageField": {
+    "deleteTooltip": "画像を削除",
+    "deleteAria": "画像を削除",
+    "select": "画像を選択する"
+  },
+  "ntpEdgeColor": {
+    "applyBackground": "画像の外側の色を背景に反映",
+    "applyChrome": "フレーム・ツールバーに合う色を反映"
+  },
+  "ntpScale": {
+    "scale": "拡大する",
+    "noScale": "拡大しない"
+  },
+  "ntpPosition": {
+    "label": "配置",
+    "options": {
+      "center": "中央",
+      "left": "左",
+      "right": "右",
+      "top": "上",
+      "bottom": "下",
+      "leftTop": "左上",
+      "leftBottom": "左下",
+      "rightTop": "右上",
+      "rightBottom": "右下",
+      "leftCenter": "左中央",
+      "rightCenter": "右中央",
+      "centerTop": "中央上",
+      "centerBottom": "中央下"
+    }
+  },
+  "ntpRepeat": {
+    "label": "繰り返し",
+    "options": {
+      "noRepeat": "繰り返さない",
+      "repeat": "縦横ともに繰り返す",
+      "repeatX": "水平方向のみ",
+      "repeatY": "垂直方向のみ"
+    }
+  },
+  "ntpEditor": {
+    "title": "ホーム背景画像エディター",
+    "description": "複数の画像を組み合わせてホーム画面の背景画像を作成できます。ドラッグで移動し、右側のコントロールでサイズや切り抜きを調整してください。",
+    "layersHeading": "レイヤー",
+    "layerCount": "{{count}} 件",
+    "cancel": "キャンセル",
+    "apply": "背景に適用",
+    "errors": {
+      "loadExisting": "画像の読み込みに失敗しました。",
+      "loadFile": "{{fileName}} の読み込みに失敗しました。",
+      "canvasUnavailable": "キャンバスが利用できません",
+      "exportFailed": "画像の書き出しに失敗しました",
+      "generateFailed": "画像の生成に失敗しました"
+    },
+    "canvas": {
+      "addImages": "画像を追加",
+      "clearAll": "すべてのレイヤーを削除",
+      "width": "幅",
+      "height": "高さ",
+      "empty": "ここに画像を追加してください"
+    },
+    "layerList": {
+      "empty": "追加したレイヤーがここに表示されます。",
+      "bringForward": "ひとつ前面へ",
+      "sendBackward": "ひとつ背面へ",
+      "delete": "レイヤーを削除"
+    },
+    "inspector": {
+      "selected": "選択中: {{name}}",
+      "scale": "拡大率 ({{value}})",
+      "opacity": "不透明度 ({{value}}%)",
+      "rotation": "回転 ({{value}}°)",
+      "flip": "反転",
+      "flipHorizontal": "左右反転",
+      "flipVertical": "上下反転",
+      "cropLeft": "切り抜き (左)",
+      "cropRight": "切り抜き (右)",
+      "cropTop": "切り抜き (上)",
+      "cropBottom": "切り抜き (下)",
+      "reset": "レイヤーをリセット"
+    }
+  },
+  "applyGuide": {
+    "title": "テーマの適用方法",
+    "steps": {
+      "accessExtensions": {
+        "title": "拡張機能管理にアクセス",
+        "body": "Chromeの右上の3点リーダから拡張機能＞拡張機能管理を選択してください"
+      },
+      "enableDeveloperMode": {
+        "title": "開発者モードをON",
+        "body": "右上の「開発者モード」のトグルをONにします。"
+      },
+      "loadExtension": {
+        "title": "拡張機能を読み込む",
+        "body": "ダウンロードしたファイルを開いた画面にドラッグ＆ドロップしてください。"
+      }
+    },
+    "ariaPrev": "前へ",
+    "ariaNext": "次へ"
+  },
+  "revertGuide": {
+    "title": "元に戻す方法",
+    "steps": {
+      "openCustomize": {
+        "title": "デフォルトのテーマカスタマイズを表示",
+        "body": "ホーム画面からChromeをカスタマイズをクリック"
+      },
+      "showThemes": {
+        "title": "テーマ一覧を表示",
+        "body": "テーマを変更を選択"
+      },
+      "setDefault": {
+        "title": "デフォルトのテーマを設定",
+        "body": "デフォルトのChromeを選択"
+      }
+    },
+    "ariaPrev": "前へ",
+    "ariaNext": "次へ",
+    "footer": "Chromeの設定「外観」からテーマを既定に戻すこともできます。"
+  },
+  "preview": {
+    "bookmarks": {
+      "all": "すべてのブックマーク"
+    },
+    "searchBox": {
+      "placeholder": "プレースフォルダー"
+    },
+    "shortcuts": {
+      "label": "ショートカット"
+    }
+  }
+}

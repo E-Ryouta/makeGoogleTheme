@@ -1,5 +1,6 @@
 import { Button, Stack } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   type EdgeColorSuggestions,
   getEdgeColorSuggestions,
@@ -11,6 +12,7 @@ type Status = "idle" | "loading" | "error";
 
 export function NtpEdgeColorButton() {
   const { state, dispatch } = useTheme();
+  const { t } = useTranslation();
   const ntpImage = state.images.theme_ntp_background;
   const [suggestions, setSuggestions] = useState<EdgeColorSuggestions | null>(
     null,
@@ -77,7 +79,7 @@ export function NtpEdgeColorButton() {
         loading={status === "loading"}
         onClick={handleApplyBackground}
       >
-        画像の外側の色を背景に反映
+        {t("ntpEdgeColor.applyBackground")}
       </Button>
       <Button
         size="sm"
@@ -87,7 +89,7 @@ export function NtpEdgeColorButton() {
         onClick={handleApplyChrome}
       >
         <span style={{ fontSize: "0.8em" }}>
-          フレーム・ツールバーに合う色を反映
+          {t("ntpEdgeColor.applyChrome")}
         </span>
       </Button>
     </Stack>

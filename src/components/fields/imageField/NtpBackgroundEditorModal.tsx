@@ -1,5 +1,6 @@
 import { Button, Flex, Group, Modal, Stack, Text } from "@mantine/core";
 import { Layers3 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import type { Action } from "../../../types/action";
 import type { FileRef } from "../../../types/fileRef";
 import { NtpBackgroundEditorCanvas } from "./ntpBackgroundEditor/NtpBackgroundEditorCanvas";
@@ -20,6 +21,7 @@ export function NtpBackgroundEditorModal({
   dispatch,
   current,
 }: NtpBackgroundEditorModalProps) {
+  const { t } = useTranslation();
   const {
     layers,
     selectedLayer,
@@ -57,13 +59,13 @@ export function NtpBackgroundEditorModal({
       opened={opened}
       onClose={onClose}
       size="xl"
-      title="ホーム背景画像エディター"
+      title={t("ntpEditor.title")}
       withinPortal={false}
       overlayProps={{ opacity: 0.2 }}
     >
       <Stack gap="lg">
         <Text size="sm" c="dimmed">
-          複数の画像を組み合わせてホーム画面の背景画像を作成できます。ドラッグで移動し、右側のコントロールでサイズや切り抜きを調整してください。
+          {t("ntpEditor.description")}
         </Text>
         <Flex
           gap="lg"
@@ -90,10 +92,10 @@ export function NtpBackgroundEditorModal({
             <Group justify="space-between">
               <Group gap="xs">
                 <Layers3 size={16} />
-                <Text fw={600}>レイヤー</Text>
+                <Text fw={600}>{t("ntpEditor.layersHeading")}</Text>
               </Group>
               <Text size="xs" c="dimmed">
-                {layers.length} 件
+                {t("ntpEditor.layerCount", { count: layers.length })}
               </Text>
             </Group>
             <NtpBackgroundEditorLayerList
@@ -128,14 +130,14 @@ export function NtpBackgroundEditorModal({
                   onClick={onClose}
                   disabled={isApplying}
                 >
-                  キャンセル
+                  {t("ntpEditor.cancel")}
                 </Button>
                 <Button
                   onClick={handleApply}
                   loading={isApplying}
                   disabled={layers.length === 0 && !current}
                 >
-                  背景に適用
+                  {t("ntpEditor.apply")}
                 </Button>
               </Flex>
             </Group>

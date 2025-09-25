@@ -1,4 +1,5 @@
 import { SHORTCUT } from "../../../../constants/ui";
+import { useTranslation } from "react-i18next";
 import type { ColorProps } from "../../../../types/types";
 
 type ShortcutsProps = Pick<ColorProps, "ntpTextColor">;
@@ -7,6 +8,7 @@ type ShortcutsProps = Pick<ColorProps, "ntpTextColor">;
  * ショートカットコンポーネント
  */
 export function Shortcuts({ ntpTextColor }: ShortcutsProps) {
+  const { t } = useTranslation();
   return (
     <div
       style={{
@@ -48,7 +50,7 @@ export function Shortcuts({ ntpTextColor }: ShortcutsProps) {
               textAlign: "center",
             }}
           >
-            Shortcut
+            {t("preview.shortcuts.label")}
           </div>
         </div>
       ))}

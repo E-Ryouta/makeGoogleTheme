@@ -1,4 +1,5 @@
 import { Folder, Grid2x2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { METRICS } from "../../../../constants/ui";
 import type { ColorProps, ImageProps } from "../../../../types/types";
 
@@ -16,6 +17,7 @@ export function BookmarksBar({
   bookmarkTextColor,
   toolbarBgUrl,
 }: BookmarksBarProps) {
+  const { t } = useTranslation();
   const bookmarks = ["Gmail", "Images", "Work", "Docs"];
 
   return (
@@ -68,7 +70,7 @@ export function BookmarksBar({
         }}
       >
         <Folder />
-        すべてのブックマーク
+        {t("preview.bookmarks.all")}
       </div>
     </div>
   );

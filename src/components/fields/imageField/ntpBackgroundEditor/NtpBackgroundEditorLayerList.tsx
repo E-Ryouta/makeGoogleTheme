@@ -1,5 +1,6 @@
 import { ActionIcon, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { ArrowDown, ArrowUp } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { TrashIcon } from "../../../icons/TrashIcon";
 import type { EditorLayer } from "./editorLayerModel";
 
@@ -20,10 +21,11 @@ export function NtpBackgroundEditorLayerList({
   onSendBackward,
   onRemove,
 }: NtpBackgroundEditorLayerListProps) {
+  const { t } = useTranslation();
   if (layers.length === 0) {
     return (
       <Text size="sm" c="dimmed">
-        追加したレイヤーがここに表示されます。
+        {t("ntpEditor.layerList.empty")}
       </Text>
     );
   }
@@ -59,33 +61,33 @@ export function NtpBackgroundEditorLayerList({
             </Text>
           </Stack>
           <Group gap="xs">
-            <Tooltip label="ひとつ前面へ" openDelay={300}>
+            <Tooltip label={t("ntpEditor.layerList.bringForward")} openDelay={300}>
               <ActionIcon
                 variant="default"
                 size="sm"
                 onClick={() => onBringForward(layer.id)}
-                aria-label="ひとつ前面へ"
+                aria-label={t("ntpEditor.layerList.bringForward")}
               >
                 <ArrowUp size={16} />
               </ActionIcon>
             </Tooltip>
-            <Tooltip label="ひとつ背面へ" openDelay={300}>
+            <Tooltip label={t("ntpEditor.layerList.sendBackward")} openDelay={300}>
               <ActionIcon
                 variant="default"
                 size="sm"
                 onClick={() => onSendBackward(layer.id)}
-                aria-label="ひとつ背面へ"
+                aria-label={t("ntpEditor.layerList.sendBackward")}
               >
                 <ArrowDown size={16} />
               </ActionIcon>
             </Tooltip>
-            <Tooltip label="レイヤーを削除" openDelay={300}>
+            <Tooltip label={t("ntpEditor.layerList.delete")} openDelay={300}>
               <ActionIcon
                 variant="light"
                 color="red"
                 size="sm"
                 onClick={() => onRemove(layer.id)}
-                aria-label="レイヤーを削除"
+                aria-label={t("ntpEditor.layerList.delete")}
               >
                 <TrashIcon />
               </ActionIcon>

@@ -1,10 +1,12 @@
 import { Search } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { SEARCH_BOX } from "../../../../constants/ui";
 
 /**
  * 検索ボックスコンポーネント
  */
 export function SearchBox() {
+  const { t } = useTranslation();
   return (
     <div
       style={{
@@ -28,7 +30,9 @@ export function SearchBox() {
           color: "#c4cbd7",
         }}
       />
-      <div style={{ color: "#1f2937", fontSize: 14 }}>プレースフォルダー</div>
+      <div style={{ color: "#1f2937", fontSize: 14 }}>
+        {t("preview.searchBox.placeholder")}
+      </div>
     </div>
   );
 }

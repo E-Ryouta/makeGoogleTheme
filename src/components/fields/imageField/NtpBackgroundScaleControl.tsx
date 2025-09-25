@@ -1,4 +1,5 @@
 import { Button, Stack } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 
 export type NtpBackgroundScaleControlProps = {
   shouldScale: boolean;
@@ -9,6 +10,7 @@ export function NtpBackgroundScaleControl({
   shouldScale,
   onChange,
 }: NtpBackgroundScaleControlProps) {
+  const { t } = useTranslation();
   return (
     <Stack gap="xs">
       <Button.Group>
@@ -16,13 +18,13 @@ export function NtpBackgroundScaleControl({
           variant={shouldScale ? "filled" : "outline"}
           onClick={() => onChange(true)}
         >
-          拡大する
+          {t("ntpScale.scale")}
         </Button>
         <Button
           variant={!shouldScale ? "filled" : "outline"}
           onClick={() => onChange(false)}
         >
-          拡大しない
+          {t("ntpScale.noScale")}
         </Button>
       </Button.Group>
     </Stack>

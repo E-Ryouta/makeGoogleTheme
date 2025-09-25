@@ -1,0 +1,185 @@
+{
+  "header": {
+    "title": "Chrome Theme Builder",
+    "applyGuide": "How to apply",
+    "revertGuide": "How to revert",
+    "languageLabel": "Language",
+    "languageOptions": {
+      "en": "English",
+      "ja": "日本語"
+    }
+  },
+  "export": {
+    "download": "Download ZIP"
+  },
+  "meta": {
+    "themeName": "Theme name"
+  },
+  "images": {
+    "title": "Images",
+    "frameBackground": "Frame background image",
+    "toolbarBackground": "Toolbar background image",
+    "tabBackground": "Tab background image",
+    "ntpBackground": "New tab background image",
+    "editBackground": "Edit background image",
+    "positionTitle": "Position",
+    "positionDescription": "Choose how the background image is positioned.",
+    "repeatTitle": "Repeat",
+    "repeatDescription": "Control how the background image tiles.",
+    "scaleTitle": "Scale",
+    "scaleDescription": "Decide whether the background should cover the entire new tab page.",
+    "edgeTitle": "Extract surrounding colors",
+    "edgeDescription": "Automatically apply commonly used colors from the image."
+  },
+  "colors": {
+    "title": "Colors",
+    "frame": "Frame",
+    "frameButton": "Frame (buttons)",
+    "toolbar": "Toolbar",
+    "toolbarBackground": "Toolbar (background)",
+    "toolbarText": "Toolbar (text)",
+    "toolbarButton": "Toolbar (buttons)",
+    "bookmarks": "Bookmarks",
+    "bookmarkText": "Bookmarks (text)",
+    "homepage": "Home page",
+    "homepageBackground": "Home page (background)",
+    "homepageText": "Home page (text)",
+    "homepageLink": "Home page (link)",
+    "omnibox": "Omnibox",
+    "omniboxBackground": "Omnibox (background)",
+    "omniboxText": "Omnibox (text)"
+  },
+  "imageField": {
+    "deleteTooltip": "Delete image",
+    "deleteAria": "Delete image",
+    "select": "Choose image"
+  },
+  "ntpEdgeColor": {
+    "applyBackground": "Apply outer colors to background",
+    "applyChrome": "Apply matching colors to frame and toolbar"
+  },
+  "ntpScale": {
+    "scale": "Scale to fill",
+    "noScale": "Keep original size"
+  },
+  "ntpPosition": {
+    "label": "Alignment",
+    "options": {
+      "center": "Center",
+      "left": "Left",
+      "right": "Right",
+      "top": "Top",
+      "bottom": "Bottom",
+      "leftTop": "Top left",
+      "leftBottom": "Bottom left",
+      "rightTop": "Top right",
+      "rightBottom": "Bottom right",
+      "leftCenter": "Center left",
+      "rightCenter": "Center right",
+      "centerTop": "Top center",
+      "centerBottom": "Bottom center"
+    }
+  },
+  "ntpRepeat": {
+    "label": "Repeat",
+    "options": {
+      "noRepeat": "Do not repeat",
+      "repeat": "Repeat on both axes",
+      "repeatX": "Repeat horizontally",
+      "repeatY": "Repeat vertically"
+    }
+  },
+  "ntpEditor": {
+    "title": "New tab background editor",
+    "description": "Combine multiple images to create a new tab background. Drag to move them and use the controls on the right to adjust size and crops.",
+    "layersHeading": "Layers",
+    "layerCount": "{{count}} layer",
+    "layerCount_plural": "{{count}} layers",
+    "cancel": "Cancel",
+    "apply": "Apply to background",
+    "errors": {
+      "loadExisting": "Failed to load the current image.",
+      "loadFile": "Failed to load {{fileName}}.",
+      "canvasUnavailable": "Canvas is not available.",
+      "exportFailed": "Failed to export the image.",
+      "generateFailed": "Failed to generate the image."
+    },
+    "canvas": {
+      "addImages": "Add images",
+      "clearAll": "Remove all layers",
+      "width": "Width",
+      "height": "Height",
+      "empty": "Add images here"
+    },
+    "layerList": {
+      "empty": "Added layers will appear here.",
+      "bringForward": "Bring forward",
+      "sendBackward": "Send backward",
+      "delete": "Delete layer"
+    },
+    "inspector": {
+      "selected": "Selected: {{name}}",
+      "scale": "Scale ({{value}})",
+      "opacity": "Opacity ({{value}}%)",
+      "rotation": "Rotation ({{value}}°)",
+      "flip": "Flip",
+      "flipHorizontal": "Flip horizontally",
+      "flipVertical": "Flip vertically",
+      "cropLeft": "Crop (left)",
+      "cropRight": "Crop (right)",
+      "cropTop": "Crop (top)",
+      "cropBottom": "Crop (bottom)",
+      "reset": "Reset layer"
+    }
+  },
+  "applyGuide": {
+    "title": "How to apply the theme",
+    "steps": {
+      "accessExtensions": {
+        "title": "Open the extensions manager",
+        "body": "From Chrome's menu (three dots), choose Extensions → Manage extensions."
+      },
+      "enableDeveloperMode": {
+        "title": "Enable developer mode",
+        "body": "Turn on the \"Developer mode\" toggle in the top-right corner."
+      },
+      "loadExtension": {
+        "title": "Load the theme",
+        "body": "Drag and drop the downloaded files onto the Manage extensions page."
+      }
+    },
+    "ariaPrev": "Previous step",
+    "ariaNext": "Next step"
+  },
+  "revertGuide": {
+    "title": "How to revert",
+    "steps": {
+      "openCustomize": {
+        "title": "Open Chrome customization",
+        "body": "Click Customize Chrome from the new tab page."
+      },
+      "showThemes": {
+        "title": "Show theme list",
+        "body": "Select Change theme."
+      },
+      "setDefault": {
+        "title": "Restore the default theme",
+        "body": "Choose Default Chrome."
+      }
+    },
+    "ariaPrev": "Previous step",
+    "ariaNext": "Next step",
+    "footer": "You can also reset the theme from Chrome settings > Appearance."
+  },
+  "preview": {
+    "bookmarks": {
+      "all": "All bookmarks"
+    },
+    "searchBox": {
+      "placeholder": "Placeholder"
+    },
+    "shortcuts": {
+      "label": "Shortcut"
+    }
+  }
+}

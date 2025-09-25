@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { setImageWithMeta } from "../../../../store/themeStore";
 import type { Action } from "../../../../types/action";
 import type { FileRef } from "../../../../types/fileRef";
@@ -33,6 +34,7 @@ export function useNtpBackgroundEditorController({
   dispatch,
   current,
 }: UseNtpBackgroundEditorControllerArgs) {
+  const { t } = useTranslation();
   const [layers, setLayers] = useState<EditorLayer[]>([]);
   const [selectedLayerId, setSelectedLayerId] = useState<string | null>(null);
   const [outputWidth, setOutputWidth] = useState<number>(DEFAULT_WIDTH);
@@ -85,7 +87,7 @@ export function useNtpBackgroundEditorController({
       } catch (error) {
         console.error(error);
         if (!cancelled) {
-          setErrorMessage("画像の読み込みに失敗しました。");
+          setErrorMessage(t("ntpEditor.errors.loadExisting"));
         }
       }
     };
@@ -95,7 +97,7 @@ export function useNtpBackgroundEditorController({
     return () => {
       cancelled = true;
     };
-  }, [opened, current]);
+  }, [opened, current, t]);
 
   useEffect(() => {
     if (!opened) return;
@@ -268,7 +270,9 @@ export function useNtpBackgroundEditorController({
           nextLayers.push(layer);
         } catch (error) {
           console.error(error);
-          setErrorMessage(`${file.name} の読み込みに失敗しました。`);
+          setErrorMessage(
+            t("ntpEditor.errors.loadFile", { fileName: file.name }),
+          );
         }
       }
 
@@ -277,7 +281,7 @@ export function useNtpBackgroundEditorController({
       setLayers((prev) => [...prev, ...nextLayers]);
       setSelectedLayerId(nextLayers[nextLayers.length - 1]?.id ?? null);
     },
-    [outputWidth, outputHeight],
+    [outputWidth, outputHeight, t],
   );
 
   const clearLayers = useCallback(() => {
@@ -415,7 +419,7 @@ export function useNtpBackgroundEditorController({
       canvas.width = Math.max(1, Math.round(outputWidth));
       canvas.height = Math.max(1, Math.round(outputHeight));
       const ctx = canvas.getContext("2d");
-      if (!ctx) throw new Error("キャンバスが利用できません");
+      if (!ctx) throw new Error(t("ntpEditor.errors.canvasUnavailable"));
 
       const images = await Promise.all(
         layers.map((layer) =>
@@ -429,7 +433,7 @@ export function useNtpBackgroundEditorController({
       const blob = await new Promise<Blob | null>((resolve) =>
         canvas.toBlob((value) => resolve(value), "image/png", 1),
       );
-      if (!blob) throw new Error("画像の書き出しに失敗しました");
+      if (!blob) throw new Error(t("ntpEditor.errors.exportFailed"));
       const fileName = `ntp-background-${Date.now()}.png`;
       const file = new File([blob], fileName, { type: "image/png" });
       setImageWithMeta(dispatch, "theme_ntp_background", file);
@@ -437,12 +441,14 @@ export function useNtpBackgroundEditorController({
     } catch (error) {
       console.error(error);
       setErrorMessage(
-        error instanceof Error ? error.message : "画像の生成に失敗しました",
+        error instanceof Error
+          ? error.message
+          : t("ntpEditor.errors.generateFailed"),
       );
     } finally {
       setIsApplying(false);
     }
-  }, [dispatch, layers, onClose, outputWidth, outputHeight]);
+  }, [dispatch, layers, onClose, outputWidth, outputHeight, t]);
 
   return {
     layers,

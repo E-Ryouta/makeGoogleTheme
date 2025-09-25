@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import { Layers3, MousePointer2 } from "lucide-react";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { TrashIcon } from "../../../icons/TrashIcon";
 import type { EditorLayer } from "./editorLayerModel";
 
@@ -48,6 +49,7 @@ export function NtpBackgroundEditorCanvas({
   onLayerPointerMove,
   onLayerPointerUp,
 }: NtpBackgroundEditorCanvasProps) {
+  const { t } = useTranslation();
   const viewportStyle = useMemo(() => {
     const safeWidth = Math.max(1, outputWidth);
     const safeHeight = Math.max(1, outputHeight);
@@ -125,7 +127,7 @@ export function NtpBackgroundEditorCanvas({
             size="xs"
             leftSection={<MousePointer2 size={16} />}
           >
-            画像を追加
+            {t("ntpEditor.canvas.addImages")}
             <input
               hidden
               type="file"
@@ -137,11 +139,11 @@ export function NtpBackgroundEditorCanvas({
               }}
             />
           </Button>
-          <Tooltip label="すべてのレイヤーを削除" openDelay={300}>
+          <Tooltip label={t("ntpEditor.canvas.clearAll")} openDelay={300}>
             <ActionIcon
               variant="default"
               size="sm"
-              aria-label="すべてのレイヤーを削除"
+              aria-label={t("ntpEditor.canvas.clearAll")}
               onClick={onClearLayers}
               disabled={layers.length === 0}
             >
@@ -152,7 +154,7 @@ export function NtpBackgroundEditorCanvas({
         <Group gap="xs">
           <Box w={120}>
             <NumberInput
-              label="幅"
+              label={t("ntpEditor.canvas.width")}
               size="xs"
               value={outputWidth}
               min={100}
@@ -167,7 +169,7 @@ export function NtpBackgroundEditorCanvas({
           </Box>
           <Box w={120}>
             <NumberInput
-              label="高さ"
+              label={t("ntpEditor.canvas.height")}
               size="xs"
               value={outputHeight}
               min={100}
@@ -205,7 +207,7 @@ export function NtpBackgroundEditorCanvas({
               }}
             >
               <Layers3 size={32} />
-              <Text size="sm">ここに画像を追加してください</Text>
+              <Text size="sm">{t("ntpEditor.canvas.empty")}</Text>
             </Stack>
           )}
         </Box>
