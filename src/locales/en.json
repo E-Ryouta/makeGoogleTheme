@@ -10,7 +10,7 @@
     }
   },
   "export": {
-    "download": "Download ZIP"
+    "download": "Generate Theme ZIP"
   },
   "meta": {
     "themeName": "Theme name"

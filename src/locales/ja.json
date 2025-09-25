@@ -10,7 +10,7 @@
     }
   },
   "export": {
-    "download": "ZIPをダウンロード"
+    "download": "テーマをZIPで生成"
   },
   "meta": {
     "themeName": "テーマ名"
