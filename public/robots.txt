@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
-# Sitemap: https://make-google-theme.vercel.app/
+# Sitemap: https://www.kisekae-theme.com/
 
