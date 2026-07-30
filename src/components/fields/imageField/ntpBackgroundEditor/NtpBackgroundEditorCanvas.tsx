@@ -15,6 +15,9 @@ import { SUPPORTED_IMAGE_TYPES } from "../../../../lib/imageValidation";
 import { TrashIcon } from "../../../icons/TrashIcon";
 import type { EditorLayer, LayerCropSide } from "./editorLayerModel";
 
+const ROTATION_HANDLE_SAFE_INSET = 16;
+const ROTATION_HANDLE_OFFSET = 40;
+
 type NtpBackgroundEditorCanvasProps = {
   layers: EditorLayer[];
   selectedLayerId: string | null;
@@ -36,6 +39,39 @@ type NtpBackgroundEditorCanvasProps = {
   onLayerPointerUp: (event: React.PointerEvent<HTMLElement>) => void;
 };
 
+function getVisibleLayerSize(layer: EditorLayer) {
+  return {
+    width:
+      layer.naturalWidth *
+      (1 - layer.crop.left - layer.crop.right) *
+      layer.scale,
+    height:
+      layer.naturalHeight *
+      (1 - layer.crop.top - layer.crop.bottom) *
+      layer.scale,
+  };
+}
+
+function getRotationHandlePosition(
+  layer: EditorLayer,
+  outputWidth: number,
+  outputHeight: number,
+) {
+  const { width, height } = getVisibleLayerSize(layer);
+  const centerX = layer.x + width / 2;
+  const centerY = layer.y + height / 2;
+  const halfRotatedHeight =
+    (Math.abs(Math.sin(layer.rotation)) * width +
+      Math.abs(Math.cos(layer.rotation)) * height) /
+    2;
+
+  return {
+    centerXPercent: (centerX / Math.max(1, outputWidth)) * 100,
+    topPercent:
+      ((centerY - halfRotatedHeight) / Math.max(1, outputHeight)) * 100,
+  };
+}
+
 export function NtpBackgroundEditorCanvas({
   layers,
   selectedLayerId,
@@ -53,6 +89,11 @@ export function NtpBackgroundEditorCanvas({
   onLayerPointerUp,
 }: NtpBackgroundEditorCanvasProps) {
   const { t } = useTranslation();
+  const selectedLayer =
+    layers.find((layer) => layer.id === selectedLayerId) ?? null;
+  const rotationHandlePosition = selectedLayer
+    ? getRotationHandlePosition(selectedLayer, outputWidth, outputHeight)
+    : null;
   const viewportStyle = useMemo(() => {
     const safeWidth = Math.max(1, outputWidth);
     const safeHeight = Math.max(1, outputHeight);
@@ -73,17 +114,7 @@ export function NtpBackgroundEditorCanvas({
   }, [outputWidth, outputHeight]);
 
   const renderLayerPreview = (layer: EditorLayer) => {
-    const cropLeft = layer.naturalWidth * layer.crop.left;
-    const cropRight = layer.naturalWidth * layer.crop.right;
-    const cropTop = layer.naturalHeight * layer.crop.top;
-    const cropBottom = layer.naturalHeight * layer.crop.bottom;
-    const sourceWidth = Math.max(1, layer.naturalWidth - cropLeft - cropRight);
-    const sourceHeight = Math.max(
-      1,
-      layer.naturalHeight - cropTop - cropBottom,
-    );
-    const drawWidth = sourceWidth * layer.scale;
-    const drawHeight = sourceHeight * layer.scale;
+    const { width: drawWidth, height: drawHeight } = getVisibleLayerSize(layer);
     const widthPercent = outputWidth > 0 ? (drawWidth / outputWidth) * 100 : 0;
     const heightPercent =
       outputHeight > 0 ? (drawHeight / outputHeight) * 100 : 0;
@@ -229,40 +260,6 @@ export function NtpBackgroundEditorCanvas({
                 {...interactionProps("crop", side)}
               />
             ))}
-            <Box
-              component="button"
-              type="button"
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: -38,
-                width: 2,
-                height: 30,
-                background: "var(--mantine-color-blue-6)",
-                transform: "translateX(-50%)",
-                pointerEvents: "none",
-              }}
-            />
-            <Box
-              style={{
-                ...handleStyle,
-                width: 22,
-                height: 22,
-                left: "50%",
-                top: -52,
-                transform: "translateX(-50%)",
-                display: "grid",
-                placeItems: "center",
-                cursor: "grab",
-                color: "var(--mantine-color-blue-7)",
-              }}
-              aria-label={t("ntpEditor.canvas.rotateLayer", {
-                name: layer.name,
-              })}
-              {...interactionProps("rotate")}
-            >
-              <RotateCw size={13} />
-            </Box>
           </>
         )}
       </Box>
@@ -348,6 +345,40 @@ export function NtpBackgroundEditorCanvas({
           }}
         >
           {layers.map((layer) => renderLayerPreview(layer))}
+          {selectedLayer && rotationHandlePosition && (
+            <Box
+              component="button"
+              type="button"
+              style={{
+                position: "absolute",
+                // 画像が上端や左右へはみ出しても、回転操作だけはキャンバス内に残す。
+                left: `clamp(${ROTATION_HANDLE_SAFE_INSET}px, ${rotationHandlePosition.centerXPercent}%, calc(100% - ${ROTATION_HANDLE_SAFE_INSET}px))`,
+                top: `clamp(${ROTATION_HANDLE_SAFE_INSET}px, calc(${rotationHandlePosition.topPercent}% - ${ROTATION_HANDLE_OFFSET}px), calc(100% - ${ROTATION_HANDLE_SAFE_INSET}px))`,
+                width: 22,
+                height: 22,
+                padding: 0,
+                border: "2px solid var(--mantine-color-blue-6)",
+                borderRadius: "50%",
+                background: "white",
+                boxShadow: "0 1px 4px rgba(0, 0, 0, 0.24)",
+                transform: "translate(-50%, -50%)",
+                display: "grid",
+                placeItems: "center",
+                cursor: "grab",
+                color: "var(--mantine-color-blue-7)",
+                zIndex: 4,
+                touchAction: "none",
+              }}
+              aria-label={t("ntpEditor.canvas.rotateLayer", {
+                name: selectedLayer.name,
+              })}
+              onPointerDown={onLayerPointerDown(selectedLayer.id, "rotate")}
+              onPointerMove={onLayerPointerMove}
+              onPointerUp={onLayerPointerUp}
+            >
+              <RotateCw size={13} aria-hidden="true" />
+            </Box>
+          )}
           {layers.length === 0 && (
             <Stack
               align="center"
