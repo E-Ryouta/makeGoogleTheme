@@ -3,6 +3,9 @@ import type { FileRef } from "./fileRef";
 export type RGB = [number, number, number]; // 0–255
 export type RGBA = [number, number, number, number]; // 0–255 + alpha 0–1
 
+export type ThemeImageKey = keyof ThemeState["images"];
+export type ThemeColorKey = keyof ThemeState["colors"];
+
 export type ThemeState = {
   name: string; // manifest.name
   version: string; // manifest.version
@@ -62,5 +65,23 @@ export type ThemeState = {
   _preview?: {
     fit?: "cover" | "contain" | "auto";
     position?: string; // "center center" etc.
+  };
+};
+
+export type ChromeThemeManifest = {
+  manifest_version: 3;
+  name: string;
+  version: string;
+  theme: {
+    images?: Partial<Record<ThemeImageKey, string>>;
+    colors?: Partial<Record<ThemeColorKey, RGB | RGBA>>;
+    properties?: {
+      ntp_background_alignment?: NonNullable<
+        ThemeState["properties"]["ntp_background_alignment"]
+      >;
+      ntp_background_repeat?: NonNullable<
+        ThemeState["properties"]["ntp_background_repeat"]
+      >;
+    };
   };
 };

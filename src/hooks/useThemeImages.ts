@@ -17,12 +17,10 @@ export function useThemeImages() {
   }, [state.images.theme_toolbar]);
 
   const tabBgUrl = useMemo(() => {
-    const f = (state.images as any).theme_tab_background as
-      | { blob: Blob }
-      | undefined;
+    const f = state.images.theme_tab_background;
     if (!f) return undefined;
     return URL.createObjectURL(f.blob);
-  }, [state.images]);
+  }, [state.images.theme_tab_background]);
 
   const ntpBgUrl = useMemo(() => {
     const f = state.images.theme_ntp_background;

@@ -1,6 +1,10 @@
 import { ActionIcon, Button, Group, Stack, Text, Tooltip } from "@mantine/core";
+import { type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { ReactNode } from "react";
+import {
+  ImageValidationError,
+  SUPPORTED_IMAGE_TYPES,
+} from "../../../lib/imageValidation";
 import { setImageWithMeta, useTheme } from "../../../store/themeStore";
 import type { Action } from "../../../types/action";
 import type { FileRef } from "../../../types/fileRef";
@@ -81,18 +85,43 @@ const InputImageButton = ({
   imageKey: keyof ThemeState["images"];
 }) => {
   const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handleFile = async (file: File) => {
+    setErrorMessage(null);
+    setIsLoading(true);
+    try {
+      await setImageWithMeta(dispatch, imageKey, file);
+    } catch (error) {
+      const key =
+        error instanceof ImageValidationError ? error.code : "decode-failed";
+      setErrorMessage(t(`imageValidation.${key}`));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <Button component="label" variant="light" size="xs">
-      {t("imageField.select")}
-      <input
-        hidden
-        type="file"
-        accept="image/*"
-        onChange={(e) => {
-          const f = e.target.files?.[0];
-          if (f) setImageWithMeta(dispatch, imageKey, f);
-        }}
-      />
-    </Button>
+    <Stack gap={4} align="flex-end">
+      <Button component="label" variant="light" size="xs" loading={isLoading}>
+        {t("imageField.select")}
+        <input
+          hidden
+          type="file"
+          accept={SUPPORTED_IMAGE_TYPES.join(",")}
+          onChange={(event) => {
+            const file = event.target.files?.[0];
+            event.target.value = "";
+            if (file) void handleFile(file);
+          }}
+        />
+      </Button>
+      {errorMessage && (
+        <Text size="xs" c="red" role="alert">
+          {errorMessage}
+        </Text>
+      )}
+    </Stack>
   );
 };

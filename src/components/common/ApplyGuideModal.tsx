@@ -14,27 +14,19 @@ export function ApplyGuideModal({ opened, onClose }: ApplyGuideModalProps) {
     () => [
       {
         title: t("applyGuide.steps.accessExtensions.title"),
-        body: (
-          <Text>
-            {t("applyGuide.steps.accessExtensions.body")}
-          </Text>
-        ),
+        body: <Text>{t("applyGuide.steps.accessExtensions.body")}</Text>,
         imageSrc: "/guide/step1.png",
         imageAlt: t("applyGuide.steps.accessExtensions.title"),
       },
       {
         title: t("applyGuide.steps.enableDeveloperMode.title"),
-        body: (
-          <Text>{t("applyGuide.steps.enableDeveloperMode.body")}</Text>
-        ),
+        body: <Text>{t("applyGuide.steps.enableDeveloperMode.body")}</Text>,
         imageSrc: "/guide/step2.png",
         imageAlt: t("applyGuide.steps.enableDeveloperMode.title"),
       },
       {
         title: t("applyGuide.steps.loadExtension.title"),
-        body: (
-          <Text>{t("applyGuide.steps.loadExtension.body")}</Text>
-        ),
+        body: <Text>{t("applyGuide.steps.loadExtension.body")}</Text>,
       },
     ],
     [t],

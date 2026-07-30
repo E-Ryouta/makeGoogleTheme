@@ -51,7 +51,7 @@ export function ensureCachedImage(
   src: string,
 ): Promise<HTMLImageElement> {
   const cached = cache.get(src);
-  if (cached && cached.complete) {
+  if (cached?.complete) {
     return Promise.resolve(cached);
   }
   return loadImage(src).then((image) => {

@@ -26,10 +26,7 @@ export default function ImagesSection() {
   return (
     <Stack>
       <MajorSectionHeader label={t("images.title")} />
-      <ImageField
-        label={t("images.frameBackground")}
-        imageKey="theme_frame"
-      />
+      <ImageField label={t("images.frameBackground")} imageKey="theme_frame" />
       <ImageField
         label={t("images.toolbarBackground")}
         imageKey="theme_toolbar"

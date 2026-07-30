@@ -5,14 +5,12 @@ import { AppMain } from "./components/AppMain";
 
 export default function App() {
   return (
-    <AppShell padding="md" header={{ height: 60 }}>
+    <AppShell padding="md" header={{ height: { base: 112, sm: 60 } }}>
       <AppShell.Header
         style={{
-          paddingLeft: 20,
-          paddingRight: 20,
+          padding: "8px 20px",
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
         }}
       >
         <AppHeader />

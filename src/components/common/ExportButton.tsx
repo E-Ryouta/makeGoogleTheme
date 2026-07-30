@@ -1,7 +1,13 @@
 import { Button } from "@mantine/core";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { triggerDownload } from "../../lib/file";
-import { buildManifest } from "../../lib/manifest";
+import { toast } from "sonner";
+import { safeDownloadName, triggerDownload } from "../../lib/file";
+import {
+  assertSafeCanvasSize,
+  validateImageFile,
+} from "../../lib/imageValidation";
+import { buildManifest, validateThemeState } from "../../lib/manifest";
 import { createZip } from "../../lib/zip";
 import { useTheme } from "../../store/themeStore";
 import type { ThemeState } from "../../types/theme";
@@ -53,6 +59,7 @@ async function convertToPngBytes(
       offsetY = (targetHeight - drawHeight) / 2;
     }
 
+    assertSafeCanvasSize(targetWidth, targetHeight);
     canvas.width = targetWidth;
     canvas.height = targetHeight;
 
@@ -76,44 +83,85 @@ async function convertToPngBytes(
 
 export function ExportButton() {
   const { state } = useTheme();
-  const manifest = buildManifest(state);
   const { t } = useTranslation();
+  const [isExporting, setIsExporting] = useState(false);
 
   async function handleDownloadZip() {
-    const files: { name: string; data: Uint8Array }[] = [];
-    const manifestData = new TextEncoder().encode(
-      JSON.stringify(manifest, null, 2),
-    );
-    files.push({ name: "manifest.json", data: manifestData });
+    const toastId = toast.loading(t("export.preparing"));
+    setIsExporting(true);
+    try {
+      const validationErrors = validateThemeState(state);
+      if (validationErrors.length > 0) {
+        toast.error(t(`export.errors.${validationErrors[0]}`), { id: toastId });
+        return;
+      }
 
-    // Collect all present images, convert to PNG, and store them under deterministic names
-    const images = state.images;
-    const present: [
-      keyof ThemeState["images"],
-      NonNullable<ThemeState["images"][keyof ThemeState["images"]]>,
-    ][] = (
-      Object.entries(images) as [
-        keyof ThemeState["images"],
-        ThemeState["images"][keyof ThemeState["images"]],
-      ][]
-    )
-      .filter(([, v]) => Boolean(v))
-      .map(([k, v]) => [k, v!]);
+      const manifest = buildManifest(state);
+      const files: { name: string; data: Uint8Array }[] = [
+        {
+          name: "manifest.json",
+          data: new TextEncoder().encode(JSON.stringify(manifest, null, 2)),
+        },
+      ];
 
-    const shouldScaleNtpBackground =
-      state.properties.ntp_background_scale_to_cover ?? false;
-
-    for (const [key, fileRef] of present) {
-      const data = await convertToPngBytes(
-        fileRef.blob,
-        key === "theme_ntp_background" && shouldScaleNtpBackground
-          ? { targetSize: { width: 1920, height: 1080 } }
-          : undefined,
+      const present = Object.entries(state.images).filter(
+        (
+          entry,
+        ): entry is [
+          keyof ThemeState["images"],
+          NonNullable<ThemeState["images"][keyof ThemeState["images"]]>,
+        ] => Boolean(entry[1]),
       );
-      files.push({ name: `images/${String(key)}.png`, data });
+
+      // 画像を順番に処理してピークメモリを抑えつつ、進捗を画面へ反映する。
+      const shouldScaleNtpBackground =
+        state.properties.ntp_background_scale_to_cover ?? false;
+
+      for (const [index, [key, fileRef]] of present.entries()) {
+        toast.loading(
+          t("export.converting", {
+            current: index + 1,
+            total: present.length,
+          }),
+          { id: toastId },
+        );
+        if (fileRef.blob instanceof File) {
+          await validateImageFile(fileRef.blob);
+        } else {
+          assertSafeCanvasSize(fileRef.width ?? 0, fileRef.height ?? 0);
+        }
+        const data = await convertToPngBytes(
+          fileRef.blob,
+          key === "theme_ntp_background" && shouldScaleNtpBackground
+            ? { targetSize: { width: 1920, height: 1080 } }
+            : undefined,
+        );
+        files.push({ name: `images/${String(key)}.png`, data });
+      }
+
+      // 変換完了後にだけZIPを組み立て、処理中の二重ダウンロードを避ける。
+      toast.loading(t("export.creatingZip"), { id: toastId });
+      const blob = await createZip(files);
+      triggerDownload(`${safeDownloadName(state.name)}.zip`, blob);
+      toast.success(t("export.success"), { id: toastId });
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        error instanceof Error ? error.message : t("export.errors.generic"),
+        { id: toastId },
+      );
+    } finally {
+      setIsExporting(false);
     }
-    const blob = await createZip(files);
-    triggerDownload(`${state.name || "theme"}.zip`, blob);
   }
-  return <Button onClick={handleDownloadZip}>{t("export.download")}</Button>;
+
+  return (
+    <Button
+      onClick={() => void handleDownloadZip()}
+      loading={isExporting}
+      disabled={isExporting}
+    >
+      {t("export.download")}
+    </Button>
+  );
 }

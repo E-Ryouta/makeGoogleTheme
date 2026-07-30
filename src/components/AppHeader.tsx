@@ -25,23 +25,25 @@ export function AppHeader() {
   };
   return (
     <>
-      <Group gap="xs" align="center">
-        <Title size="h4">{t("header.title")}</Title>
-        <LanguageMenu
-          label={t("header.languageLabel")}
-          options={languageOptions}
-          currentLanguage={currentLanguage}
-          onChange={handleLanguageChange}
-        />
-      </Group>
-      <Group gap="sm" align="center">
-        <Anchor component="button" onClick={openApply} underline="always">
-          {t("header.applyGuide")}
-        </Anchor>
-        <Anchor component="button" onClick={openRevert} underline="always">
-          {t("header.revertGuide")}
-        </Anchor>
-        <ExportButton />
+      <Group justify="space-between" gap="xs" wrap="wrap" w="100%">
+        <Group gap="xs" align="center" wrap="nowrap">
+          <Title size="h4">{t("header.title")}</Title>
+          <LanguageMenu
+            label={t("header.languageLabel")}
+            options={languageOptions}
+            currentLanguage={currentLanguage}
+            onChange={handleLanguageChange}
+          />
+        </Group>
+        <Group gap="xs" align="center" wrap="wrap">
+          <Anchor component="button" onClick={openApply} underline="always">
+            {t("header.applyGuide")}
+          </Anchor>
+          <Anchor component="button" onClick={openRevert} underline="always">
+            {t("header.revertGuide")}
+          </Anchor>
+          <ExportButton />
+        </Group>
       </Group>
       <ApplyGuideModal opened={openedApply} onClose={closeApply} />
       <RevertGuideModal opened={openedRevert} onClose={closeRevert} />

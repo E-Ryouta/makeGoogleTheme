@@ -8,11 +8,12 @@ import {
   Text,
   Tooltip,
 } from "@mantine/core";
-import { Layers3, MousePointer2 } from "lucide-react";
+import { Layers3, MousePointer2, RotateCw } from "lucide-react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { SUPPORTED_IMAGE_TYPES } from "../../../../lib/imageValidation";
 import { TrashIcon } from "../../../icons/TrashIcon";
-import type { EditorLayer } from "./editorLayerModel";
+import type { EditorLayer, LayerCropSide } from "./editorLayerModel";
 
 type NtpBackgroundEditorCanvasProps = {
   layers: EditorLayer[];
@@ -28,9 +29,11 @@ type NtpBackgroundEditorCanvasProps = {
   canvasWrapperRef: React.RefObject<HTMLDivElement | null>;
   onLayerPointerDown: (
     layerId: string,
-  ) => (event: React.PointerEvent<HTMLDivElement>) => void;
-  onLayerPointerMove: (event: React.PointerEvent<HTMLDivElement>) => void;
-  onLayerPointerUp: (event: React.PointerEvent<HTMLDivElement>) => void;
+    mode?: "move" | "scale" | "rotate" | "crop",
+    cropSide?: LayerCropSide,
+  ) => (event: React.PointerEvent<HTMLElement>) => void;
+  onLayerPointerMove: (event: React.PointerEvent<HTMLElement>) => void;
+  onLayerPointerUp: (event: React.PointerEvent<HTMLElement>) => void;
 };
 
 export function NtpBackgroundEditorCanvas({
@@ -88,6 +91,25 @@ export function NtpBackgroundEditorCanvas({
     const topPercent = outputHeight > 0 ? (layer.y / outputHeight) * 100 : 0;
     const isSelected = layer.id === selectedLayerId;
     const isDragging = layer.id === draggingLayerId;
+    const interactionProps = (
+      mode: "scale" | "rotate" | "crop",
+      cropSide?: LayerCropSide,
+    ) => ({
+      onPointerDown: onLayerPointerDown(layer.id, mode, cropSide),
+      onPointerMove: onLayerPointerMove,
+      onPointerUp: onLayerPointerUp,
+    });
+    const handleStyle = {
+      position: "absolute" as const,
+      width: 14,
+      height: 14,
+      border: "2px solid var(--mantine-color-blue-6)",
+      borderRadius: "50%",
+      background: "white",
+      boxShadow: "0 1px 4px rgba(0, 0, 0, 0.24)",
+      zIndex: 3,
+      touchAction: "none" as const,
+    };
 
     return (
       <Box
@@ -109,11 +131,141 @@ export function NtpBackgroundEditorCanvas({
           boxShadow: isSelected
             ? "0 0 0 1px rgba(51, 154, 240, 0.4) inset"
             : "inset 0 0 0 1px rgba(0, 0, 0, 0.08)",
+          transform: `rotate(${layer.rotation}rad)`,
+          transformOrigin: "center",
         }}
-        onPointerDown={onLayerPointerDown(layer.id)}
+        onPointerDown={onLayerPointerDown(layer.id, "move")}
         onPointerMove={onLayerPointerMove}
         onPointerUp={onLayerPointerUp}
-      />
+      >
+        {isSelected && (
+          <>
+            {/* 四隅は縦横比を保った拡大縮小、四辺中央は画像の切り抜きに使う。 */}
+            {[
+              { key: "top-left", top: -7, left: -7, cursor: "nwse-resize" },
+              { key: "top-right", top: -7, right: -7, cursor: "nesw-resize" },
+              {
+                key: "bottom-left",
+                bottom: -7,
+                left: -7,
+                cursor: "nesw-resize",
+              },
+              {
+                key: "bottom-right",
+                bottom: -7,
+                right: -7,
+                cursor: "nwse-resize",
+              },
+            ].map(({ key, ...position }) => (
+              <Box
+                component="button"
+                type="button"
+                key={key}
+                style={{ ...handleStyle, ...position }}
+                aria-label={t("ntpEditor.canvas.scaleLayer", {
+                  name: layer.name,
+                })}
+                {...interactionProps("scale")}
+              />
+            ))}
+            {(
+              [
+                {
+                  side: "left",
+                  style: {
+                    left: -5,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "ew-resize",
+                  },
+                },
+                {
+                  side: "right",
+                  style: {
+                    right: -5,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "ew-resize",
+                  },
+                },
+                {
+                  side: "top",
+                  style: {
+                    top: -5,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    cursor: "ns-resize",
+                  },
+                },
+                {
+                  side: "bottom",
+                  style: {
+                    bottom: -5,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    cursor: "ns-resize",
+                  },
+                },
+              ] as const
+            ).map(({ side, style }) => (
+              <Box
+                component="button"
+                type="button"
+                key={`crop-${side}`}
+                style={{
+                  position: "absolute",
+                  width: side === "left" || side === "right" ? 10 : 28,
+                  height: side === "top" || side === "bottom" ? 10 : 28,
+                  borderRadius: 5,
+                  background: "var(--mantine-color-blue-6)",
+                  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+                  zIndex: 2,
+                  touchAction: "none",
+                  ...style,
+                }}
+                aria-label={t("ntpEditor.canvas.cropLayer", {
+                  name: layer.name,
+                })}
+                {...interactionProps("crop", side)}
+              />
+            ))}
+            <Box
+              component="button"
+              type="button"
+              style={{
+                position: "absolute",
+                left: "50%",
+                top: -38,
+                width: 2,
+                height: 30,
+                background: "var(--mantine-color-blue-6)",
+                transform: "translateX(-50%)",
+                pointerEvents: "none",
+              }}
+            />
+            <Box
+              style={{
+                ...handleStyle,
+                width: 22,
+                height: 22,
+                left: "50%",
+                top: -52,
+                transform: "translateX(-50%)",
+                display: "grid",
+                placeItems: "center",
+                cursor: "grab",
+                color: "var(--mantine-color-blue-7)",
+              }}
+              aria-label={t("ntpEditor.canvas.rotateLayer", {
+                name: layer.name,
+              })}
+              {...interactionProps("rotate")}
+            >
+              <RotateCw size={13} />
+            </Box>
+          </>
+        )}
+      </Box>
     );
   };
 
@@ -131,7 +283,7 @@ export function NtpBackgroundEditorCanvas({
             <input
               hidden
               type="file"
-              accept="image/*"
+              accept={SUPPORTED_IMAGE_TYPES.join(",")}
               multiple
               onChange={(event) => {
                 onAddFiles(event.target.files);
@@ -158,7 +310,7 @@ export function NtpBackgroundEditorCanvas({
               size="xs"
               value={outputWidth}
               min={100}
-              max={6000}
+              max={8192}
               step={10}
               onChange={(value) => {
                 if (typeof value === "number" && Number.isFinite(value)) {
@@ -173,7 +325,7 @@ export function NtpBackgroundEditorCanvas({
               size="xs"
               value={outputHeight}
               min={100}
-              max={6000}
+              max={8192}
               step={10}
               onChange={(value) => {
                 if (typeof value === "number" && Number.isFinite(value)) {

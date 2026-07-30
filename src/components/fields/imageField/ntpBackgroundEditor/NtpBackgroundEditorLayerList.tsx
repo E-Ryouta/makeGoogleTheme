@@ -61,7 +61,10 @@ export function NtpBackgroundEditorLayerList({
             </Text>
           </Stack>
           <Group gap="xs">
-            <Tooltip label={t("ntpEditor.layerList.bringForward")} openDelay={300}>
+            <Tooltip
+              label={t("ntpEditor.layerList.bringForward")}
+              openDelay={300}
+            >
               <ActionIcon
                 variant="default"
                 size="sm"
@@ -71,7 +74,10 @@ export function NtpBackgroundEditorLayerList({
                 <ArrowUp size={16} />
               </ActionIcon>
             </Tooltip>
-            <Tooltip label={t("ntpEditor.layerList.sendBackward")} openDelay={300}>
+            <Tooltip
+              label={t("ntpEditor.layerList.sendBackward")}
+              openDelay={300}
+            >
               <ActionIcon
                 variant="default"
                 size="sm"

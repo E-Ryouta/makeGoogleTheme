@@ -1,5 +1,5 @@
 {
-  "name": "vite-min-template",
+  "name": "chrome-theme-builder",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,7 +8,9 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "lint": "biome check --write ."
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "test": "node --experimental-strip-types --test tests/manifest.test.ts tests/zip.test.ts tests/imageValidation.test.ts"
   },
   "dependencies": {
     "@mantine/core": "8.2.8",
@@ -18,7 +20,8 @@
     "lucide-react": "^0.544.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-i18next": "^15.7.3"
+    "react-i18next": "^15.7.3",
+    "sonner": "^2.0.7"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.2",
@@ -30,6 +33,5 @@
     "postcss-simple-vars": "^7.0.1",
     "typescript": "^5.8.3",
     "vite": "^6.3.5"
-  },
-  "packageManager": "yarn@4.9.3"
+  }
 }
