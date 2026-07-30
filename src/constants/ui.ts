@@ -27,6 +27,9 @@ export const CANVAS = {
   BASE_HEIGHT: 1080,
 } as const;
 
+// 導入文から下部ガイドへ移動するアンカーを両コンポーネントで共有する。
+export const THEME_BUILDER_GUIDE_ID = "theme-builder-guide";
+
 /**
  * タブのレイアウト関連定数
  */

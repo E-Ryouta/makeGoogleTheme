@@ -9,6 +9,52 @@
       "ja": "日本語"
     }
   },
+  "intro": {
+    "title": "Free Google Chrome theme creator",
+    "description": "Choose images and colors, preview your design, and create a custom Chrome theme.",
+    "guideLink": "See how it works"
+  },
+  "about": {
+    "eyebrow": "How Theme Builder works",
+    "title": "Create a Chrome theme with your own images and colors",
+    "description": "Theme Builder is a free tool for customizing the Google Chrome frame, toolbar, tabs, and new tab page. See changes in a Chrome-style preview as you work, then download the finished theme as a ZIP file.",
+    "stepLabel": "STEP {{number}}",
+    "steps": {
+      "image": {
+        "title": "Choose background images",
+        "description": "Add JPEG, PNG, or WebP images to each area. The new tab editor also lets you move, resize, rotate, and crop an image directly."
+      },
+      "design": {
+        "title": "Adjust colors and layout",
+        "description": "Set frame and toolbar colors, image alignment, and repeat behavior. Every change appears immediately in the Chrome-style preview."
+      },
+      "download": {
+        "title": "Download and apply",
+        "description": "Generate the theme ZIP when your design is ready. Extract it and load the folder from Chrome's extensions manager to apply the theme."
+      }
+    },
+    "privacyTitle": "Your images are processed in your browser",
+    "privacyDescription": "Image decoding, editing, color extraction, and ZIP creation happen in your browser. Images are not uploaded to a server for theme creation. Theme Builder supports JPEG, PNG, and WebP files and applies size limits to keep the browser responsive.",
+    "faqTitle": "Frequently asked questions",
+    "faq": {
+      "free": {
+        "question": "Can I create a Chrome theme for free?",
+        "answer": "Yes. Theme Builder is free to use and does not require an account."
+      },
+      "privacy": {
+        "question": "Are my images sent to a server?",
+        "answer": "No. Images used to build your theme are processed in your browser and are not uploaded to a server."
+      },
+      "formats": {
+        "question": "Which image formats are supported?",
+        "answer": "JPEG, PNG, and WebP are supported. Images must be 10 MB or smaller, no more than 8192 px on either side, and no more than 40 million pixels."
+      },
+      "apply": {
+        "question": "How do I apply the theme in Chrome?",
+        "answer": "Extract the downloaded ZIP, enable developer mode in Chrome's extensions manager, and load the extracted folder. You can also open the application guide from the top of this page."
+      }
+    }
+  },
   "export": {
     "download": "Generate Theme ZIP",
     "preparing": "Preparing your ZIP…",
