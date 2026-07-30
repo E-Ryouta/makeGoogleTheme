@@ -34,7 +34,7 @@ export function NtpBackgroundPositionSelect({
   );
 
   const translatedLabel =
-    label === null ? undefined : label ?? t("ntpPosition.label");
+    label === null ? undefined : (label ?? t("ntpPosition.label"));
 
   return (
     <Select

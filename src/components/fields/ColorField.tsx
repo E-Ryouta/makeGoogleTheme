@@ -19,8 +19,7 @@ export default function ColorField({
   const rgb: RGB | undefined = value
     ? ([value[0], value[1], value[2]] as RGB)
     : undefined;
-  const a: number =
-    value && (value as any).length === 4 ? ((value as RGBA)[3] ?? 1) : 1;
+  const a: number = value?.length === 4 ? ((value as RGBA)[3] ?? 1) : 1;
   const hex = rgbToHex(rgb);
 
   return (
@@ -33,12 +32,8 @@ export default function ColorField({
           const base = hexToRgb(e.target.value);
           if (!base) return setColor(dispatch, colorKey, undefined);
           if (alpha)
-            setColor(
-              dispatch,
-              colorKey as any,
-              [base[0], base[1], base[2], a] as any,
-            );
-          else setColor(dispatch, colorKey as any, base as any);
+            setColor(dispatch, colorKey, [base[0], base[1], base[2], a]);
+          else setColor(dispatch, colorKey, base);
         }}
       />
       <TextInput
@@ -48,12 +43,8 @@ export default function ColorField({
           const base = hexToRgb(e.target.value);
           if (!base) return setColor(dispatch, colorKey, undefined);
           if (alpha)
-            setColor(
-              dispatch,
-              colorKey as any,
-              [base[0], base[1], base[2], a] as any,
-            );
-          else setColor(dispatch, colorKey as any, base as any);
+            setColor(dispatch, colorKey, [base[0], base[1], base[2], a]);
+          else setColor(dispatch, colorKey, base);
         }}
       />
       {alpha && (
@@ -65,11 +56,12 @@ export default function ColorField({
             value={a}
             onChange={(v) => {
               const base = rgb || [0, 0, 0];
-              setColor(
-                dispatch,
-                colorKey as any,
-                [base[0], base[1], base[2], Number(v)] as any,
-              );
+              setColor(dispatch, colorKey, [
+                base[0],
+                base[1],
+                base[2],
+                Number(v),
+              ]);
             }}
             style={{ flex: 1 }}
           />

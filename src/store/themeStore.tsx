@@ -1,18 +1,8 @@
 import { createContext, useContext, useMemo, useReducer } from "react";
+import { validateImageFile } from "../lib/imageValidation";
+import type { Action } from "../types/action";
 import type { FileRef } from "../types/fileRef";
 import type { RGB, RGBA, ThemeState } from "../types/theme";
-
-// setSelectedSlot and SlotKey have been removed from the store
-
-type Action =
-  | { type: "set_name"; name: string }
-  | { type: "set_version"; version: string }
-  | { type: "set_color"; key: keyof ThemeState["colors"]; value?: RGB | RGBA }
-  | { type: "set_property"; key: keyof ThemeState["properties"]; value?: any }
-  | { type: "set_image"; key: keyof ThemeState["images"]; value?: FileRef }
-  | { type: "reset"; state: ThemeState }
-  | { type: "undo" }
-  | { type: "redo" };
 
 function reducePresent(state: ThemeState, action: Action): ThemeState {
   switch (action.type) {
@@ -92,42 +82,21 @@ export function useTheme() {
   };
 }
 
-export function useSelectedSlot() {
-  throw new Error("useSelectedSlot has been removed");
-}
-
-export function setImageWithMeta(
+export async function setImageWithMeta(
   dispatch: React.Dispatch<Action>,
   key: keyof ThemeState["images"],
   file: File,
-) {
+): Promise<void> {
+  const metadata = await validateImageFile(file);
   const id = crypto.randomUUID();
-  const name = file.name;
-  const blob = file as Blob;
-  const fr = new FileReader();
-  fr.onload = () => {
-    // Create an offscreen image to measure dimensions
-    const url = URL.createObjectURL(blob);
-    const img = new Image();
-    img.onload = () => {
-      const value: FileRef = {
-        id,
-        name,
-        blob,
-        width: img.width,
-        height: img.height,
-      };
-      dispatch({ type: "set_image", key, value });
-      URL.revokeObjectURL(url);
-    };
-    img.onerror = () => {
-      const value: FileRef = { id, name, blob };
-      dispatch({ type: "set_image", key, value });
-      URL.revokeObjectURL(url);
-    };
-    img.src = url;
+  const value: FileRef = {
+    id,
+    name: file.name,
+    blob: file,
+    width: metadata.width,
+    height: metadata.height,
   };
-  fr.readAsArrayBuffer(file); // trigger load
+  dispatch({ type: "set_image", key, value });
 }
 
 export function setColor(

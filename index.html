@@ -1,44 +1,102 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja" dir="ltr">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta
-      name="viewport"
-      content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
-    />
-    <meta name="google-site-verification" content="mhoNYL3_BgCWrltzLZ74cgvLm9RBORj5Jx_f6XdovWA" />
-    <meta name="google-site-verification" content="MQZuFVeo-k0mKPII14osznyrtaAvSvl6zfWGtmLfqeg" />
+    <link rel="canonical" href="https://www.kisekae-theme.com/" />
 
-    <title>Theme Builder | Chrome Googleの背景を変更できるテーマを自作するツール</title>
-    <meta name="description" content="テーマビルダーは、色や背景画像を調整して、Googleの背景を自分好みに変更できるZipファイルを生成する無料ツールです。" />
+    <title>無料のGoogle Chromeテーマ作成ツール | Theme Builder</title>
+    <meta
+      name="description"
+      content="画像と色を選び、プレビューを確認しながらGoogle Chrome用テーマZIPを無料で作成できます。画像処理はブラウザ内で完結します。"
+    />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#ffffff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'self'; font-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
+    <meta
+      name="google-site-verification"
+      content="mhoNYL3_BgCWrltzLZ74cgvLm9RBORj5Jx_f6XdovWA"
+    />
+    <meta
+      name="google-site-verification"
+      content="MQZuFVeo-k0mKPII14osznyrtaAvSvl6zfWGtmLfqeg"
+    />
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="テーマビルダー" />
-    <meta property="og:description" content="色や背景画像を調整して、Googleの背景を自分好みに変更できるZIPファイルの作成を支援するツールです・" />
+    <meta property="og:url" content="https://www.kisekae-theme.com/" />
+    <meta property="og:site_name" content="Theme Builder" />
+    <meta
+      property="og:title"
+      content="無料のGoogle Chromeテーマ作成ツール"
+    />
+    <meta
+      property="og:description"
+      content="画像と色を選び、プレビューを確認しながらChromeテーマZIPを作成できます。"
+    />
+    <meta
+      property="og:image"
+      content="https://www.kisekae-theme.com/guide/step1.png"
+    />
+    <meta property="og:image:width" content="309" />
+    <meta property="og:image:height" content="136" />
+    <meta
+      property="og:image:alt"
+      content="Theme BuilderのChromeテーマ適用ガイド"
+    />
     <meta property="og:locale" content="ja_JP" />
     <meta property="og:locale:alternate" content="en_US" />
 
-    <!-- JSON-LD Structured Data -->
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content="無料のGoogle Chromeテーマ作成ツール"
+    />
+    <meta
+      name="twitter:description"
+      content="画像と色を選び、ChromeテーマZIPをブラウザだけで作成できます。"
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.kisekae-theme.com/guide/step1.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Theme BuilderのChromeテーマ適用ガイド"
+    />
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "Google Chrome テーマの自作ツール",
+        "name": "Theme Builder",
+        "url": "https://www.kisekae-theme.com/",
         "applicationCategory": "DesignApplication",
         "operatingSystem": "Web",
+        "browserRequirements": "Google Chrome, Microsoft Edge, Safari",
         "inLanguage": ["ja", "en"],
-        "availableLanguage": ["ja", "en"],
-        "description": "Google Chromeのテーマを作成できる無料のWebアプリ。色や背景画像を調整して、自分好みのGoogle Chromeテーマ用ZIPファイルを出力します"
+        "isAccessibleForFree": true,
+        "description": "画像と色を設定し、Google Chrome用テーマZIPをブラウザ内で作成できる無料Webアプリです。"
       }
     </script>
   </head>
   <body>
-    <noscript>このアプリを利用するには JavaScript を有効にしてください。</noscript>
-    <div id="root"></div>
+    <noscript>
+      Theme Builderを利用するにはJavaScriptを有効にしてください。
+    </noscript>
+    <div id="root">
+      <main>
+        <h1>無料のGoogle Chromeテーマ作成ツール</h1>
+        <p>
+          背景画像と色を選び、プレビューを確認しながらChromeテーマZIPを作成できます。
+          選択した画像はサーバーへアップロードされず、ブラウザ内で処理されます。
+        </p>
+      </main>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

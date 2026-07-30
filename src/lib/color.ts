@@ -1,4 +1,4 @@
-import type { RGB } from "../types/theme";
+import type { RGB, RGBA } from "../types/theme";
 
 export function rgbToHex(rgb?: RGB): string {
   if (!rgb) return "";
@@ -47,7 +47,7 @@ export function contrastRatio(a?: RGB, b?: RGB): number | undefined {
 }
 
 // Convenience: convert either RGB or [r,g,b,a] to CSS color string
-export function colorToCss(c?: any): string {
+export function colorToCss(c?: RGB | RGBA): string {
   if (!c) return "";
   if (Array.isArray(c) && c.length === 4) {
     const [r, g, b, a] = c as [number, number, number, number];

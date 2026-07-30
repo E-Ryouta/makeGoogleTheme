@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  assertEditorLayerCapacity,
+  assertSafeCanvasSize,
+  IMAGE_LIMITS,
+  ImageValidationError,
+  validateImageFile,
+} from "../../../../lib/imageValidation";
 import { setImageWithMeta } from "../../../../store/themeStore";
 import type { Action } from "../../../../types/action";
 import type { FileRef } from "../../../../types/fileRef";
@@ -51,6 +58,15 @@ export function useNtpBackgroundEditorController({
   const selectedLayer = useMemo(
     () => layers.find((layer) => layer.id === selectedLayerId) ?? null,
     [layers, selectedLayerId],
+  );
+
+  const validationMessage = useCallback(
+    (error: unknown) => {
+      const key =
+        error instanceof ImageValidationError ? error.code : "decode-failed";
+      return t(`imageValidation.${key}`);
+    },
+    [t],
   );
 
   useEffect(() => {
@@ -128,9 +144,13 @@ export function useNtpBackgroundEditorController({
         cancelAnimationFrame(frameRef.current);
       }
       frameRef.current = requestAnimationFrame(async () => {
-        const ratio = window.devicePixelRatio || 1;
+        const requestedRatio = window.devicePixelRatio || 1;
         const width = Math.max(1, Math.round(outputWidth));
         const height = Math.max(1, Math.round(outputHeight));
+        const safeRatio = Math.sqrt(
+          IMAGE_LIMITS.maxPixels / Math.max(1, width * height),
+        );
+        const ratio = Math.max(1, Math.min(requestedRatio, safeRatio));
         const deviceWidth = width * ratio;
         const deviceHeight = height * ratio;
 
@@ -177,11 +197,15 @@ export function useNtpBackgroundEditorController({
   }, []);
 
   const setOutputWidthValue = useCallback((value: number) => {
-    setOutputWidth(Math.max(100, Math.round(value)));
+    setOutputWidth(
+      Math.min(IMAGE_LIMITS.maxDimension, Math.max(100, Math.round(value))),
+    );
   }, []);
 
   const setOutputHeightValue = useCallback((value: number) => {
-    setOutputHeight(Math.max(100, Math.round(value)));
+    setOutputHeight(
+      Math.min(IMAGE_LIMITS.maxDimension, Math.max(100, Math.round(value))),
+    );
   }, []);
 
   const updateLayer = useCallback(
@@ -259,8 +283,16 @@ export function useNtpBackgroundEditorController({
       const nextLayers: EditorLayer[] = [];
       setErrorMessage(null);
 
+      try {
+        assertEditorLayerCapacity(layers.length, files.length);
+      } catch (error) {
+        setErrorMessage(validationMessage(error));
+        return;
+      }
+
       for (const file of Array.from(files)) {
         try {
+          await validateImageFile(file);
           const layer = await createLayerFromBlob(
             file,
             file.name,
@@ -270,8 +302,12 @@ export function useNtpBackgroundEditorController({
           nextLayers.push(layer);
         } catch (error) {
           console.error(error);
+          const reason = validationMessage(error);
           setErrorMessage(
-            t("ntpEditor.errors.loadFile", { fileName: file.name }),
+            t("ntpEditor.errors.loadFileWithReason", {
+              fileName: file.name,
+              reason,
+            }),
           );
         }
       }
@@ -281,7 +317,7 @@ export function useNtpBackgroundEditorController({
       setLayers((prev) => [...prev, ...nextLayers]);
       setSelectedLayerId(nextLayers[nextLayers.length - 1]?.id ?? null);
     },
-    [outputWidth, outputHeight, t],
+    [layers.length, outputWidth, outputHeight, t, validationMessage],
   );
 
   const clearLayers = useCallback(() => {
@@ -415,6 +451,7 @@ export function useNtpBackgroundEditorController({
 
     try {
       setIsApplying(true);
+      assertSafeCanvasSize(outputWidth, outputHeight);
       const canvas = document.createElement("canvas");
       canvas.width = Math.max(1, Math.round(outputWidth));
       canvas.height = Math.max(1, Math.round(outputHeight));
@@ -436,19 +473,29 @@ export function useNtpBackgroundEditorController({
       if (!blob) throw new Error(t("ntpEditor.errors.exportFailed"));
       const fileName = `ntp-background-${Date.now()}.png`;
       const file = new File([blob], fileName, { type: "image/png" });
-      setImageWithMeta(dispatch, "theme_ntp_background", file);
+      await setImageWithMeta(dispatch, "theme_ntp_background", file);
       onClose();
     } catch (error) {
       console.error(error);
       setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : t("ntpEditor.errors.generateFailed"),
+        error instanceof ImageValidationError
+          ? validationMessage(error)
+          : error instanceof Error
+            ? error.message
+            : t("ntpEditor.errors.generateFailed"),
       );
     } finally {
       setIsApplying(false);
     }
-  }, [dispatch, layers, onClose, outputWidth, outputHeight, t]);
+  }, [
+    dispatch,
+    layers,
+    onClose,
+    outputWidth,
+    outputHeight,
+    t,
+    validationMessage,
+  ]);
 
   return {
     layers,

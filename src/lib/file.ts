@@ -24,5 +24,18 @@ export function triggerDownload(filename: string, data: Blob | string) {
   document.body.appendChild(a);
   a.click();
   a.remove();
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+export function safeDownloadName(name: string): string {
+  const sanitized = Array.from(name.trim())
+    .map((character) =>
+      character.charCodeAt(0) < 32 || '<>:"/\\|?*'.includes(character)
+        ? "-"
+        : character,
+    )
+    .join("")
+    .replace(/[. ]+$/g, "")
+    .slice(0, 80);
+  return sanitized || "theme";
 }

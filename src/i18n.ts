@@ -13,20 +13,19 @@ const fallbackLng = "en";
 const storedLanguage =
   typeof window !== "undefined" ? localStorage.getItem("app-language") : null;
 
-const initialLanguage = storedLanguage && resources[storedLanguage as keyof typeof resources]
-  ? (storedLanguage as keyof typeof resources)
-  : "ja";
+const initialLanguage =
+  storedLanguage && resources[storedLanguage as keyof typeof resources]
+    ? (storedLanguage as keyof typeof resources)
+    : "ja";
 
-void i18n
-  .use(initReactI18next)
-  .init({
-    resources,
-    lng: initialLanguage,
-    fallbackLng,
-    interpolation: {
-      escapeValue: false,
-    },
-  });
+void i18n.use(initReactI18next).init({
+  resources,
+  lng: initialLanguage,
+  fallbackLng,
+  interpolation: {
+    escapeValue: false,
+  },
+});
 
 if (typeof window !== "undefined") {
   const updateDocumentLang = (lng: string) => {

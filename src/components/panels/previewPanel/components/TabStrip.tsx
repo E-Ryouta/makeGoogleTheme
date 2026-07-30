@@ -1,4 +1,5 @@
 import { METRICS, TAB } from "../../../../constants/ui";
+import type { RGB, RGBA } from "../../../../types/theme";
 import type { ColorProps, ImageProps } from "../../../../types/types";
 import { Tab } from "./Tab";
 import { WindowControls } from "./WindowControls";
@@ -10,7 +11,7 @@ type TabStripProps = Pick<
   "frameColor" | "toolbarColor" | "toolbarTextColor"
 > &
   Pick<ImageProps, "tabBgUrl" | "toolbarBgUrl"> & {
-    windowButtonCss: string;
+    windowButtonCss: string | RGB | RGBA | undefined;
   };
 
 /**

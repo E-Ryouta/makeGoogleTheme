@@ -11,6 +11,7 @@ import {
 import { Layers3, MousePointer2 } from "lucide-react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { SUPPORTED_IMAGE_TYPES } from "../../../../lib/imageValidation";
 import { TrashIcon } from "../../../icons/TrashIcon";
 import type { EditorLayer } from "./editorLayerModel";
 
@@ -131,7 +132,7 @@ export function NtpBackgroundEditorCanvas({
             <input
               hidden
               type="file"
-              accept="image/*"
+              accept={SUPPORTED_IMAGE_TYPES.join(",")}
               multiple
               onChange={(event) => {
                 onAddFiles(event.target.files);
@@ -158,7 +159,7 @@ export function NtpBackgroundEditorCanvas({
               size="xs"
               value={outputWidth}
               min={100}
-              max={6000}
+              max={8192}
               step={10}
               onChange={(value) => {
                 if (typeof value === "number" && Number.isFinite(value)) {
@@ -173,7 +174,7 @@ export function NtpBackgroundEditorCanvas({
               size="xs"
               value={outputHeight}
               min={100}
-              max={6000}
+              max={8192}
               step={10}
               onChange={(value) => {
                 if (typeof value === "number" && Number.isFinite(value)) {

@@ -1,5 +1,5 @@
-import { SHORTCUT } from "../../../../constants/ui";
 import { useTranslation } from "react-i18next";
+import { SHORTCUT } from "../../../../constants/ui";
 import type { ColorProps } from "../../../../types/types";
 
 type ShortcutsProps = Pick<ColorProps, "ntpTextColor">;
@@ -24,7 +24,7 @@ export function Shortcuts({ ntpTextColor }: ShortcutsProps) {
     >
       {Array.from({ length: SHORTCUT.COUNT }).map((_, i) => (
         <div
-          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+          // biome-ignore lint/suspicious/noArrayIndexKey: preview slots are static and never reordered
           key={i}
           style={{
             width: SHORTCUT.WIDTH,

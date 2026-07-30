@@ -3,7 +3,7 @@ import type { RGB, RGBA } from "../../../../types/theme";
 
 type WindowControlsProps = {
   /** ウィンドウボタンの背景色 */
-  buttonColor: string | RGB | RGBA;
+  buttonColor?: string | RGB | RGBA;
 };
 
 /**

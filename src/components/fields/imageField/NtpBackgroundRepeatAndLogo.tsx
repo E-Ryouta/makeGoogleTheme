@@ -24,7 +24,8 @@ export function NtpBackgroundRepeatAndLogo({
     [t],
   );
 
-  const translatedLabel = label === null ? undefined : label ?? t("ntpRepeat.label");
+  const translatedLabel =
+    label === null ? undefined : (label ?? t("ntpRepeat.label"));
 
   return (
     <Box>

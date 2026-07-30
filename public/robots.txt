@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
-# Sitemap: https://www.kisekae-theme.com/
 
+Sitemap: https://www.kisekae-theme.com/sitemap.xml
