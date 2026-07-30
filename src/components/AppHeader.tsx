@@ -27,7 +27,9 @@ export function AppHeader() {
     <>
       <Group justify="space-between" gap="xs" wrap="wrap" w="100%">
         <Group gap="xs" align="center" wrap="nowrap">
-          <Title size="h4">{t("header.title")}</Title>
+          <Title order={2} size="h4">
+            {t("header.title")}
+          </Title>
           <LanguageMenu
             label={t("header.languageLabel")}
             options={languageOptions}
