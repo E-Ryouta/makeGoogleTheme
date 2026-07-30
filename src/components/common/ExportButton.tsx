@@ -1,6 +1,7 @@
-import { Alert, Button, Stack, Text } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { safeDownloadName, triggerDownload } from "../../lib/file";
 import {
   assertSafeCanvasSize,
@@ -83,18 +84,16 @@ async function convertToPngBytes(
 export function ExportButton() {
   const { state } = useTheme();
   const { t } = useTranslation();
-  const [status, setStatus] = useState<
-    "idle" | "converting" | "creating-zip" | "success" | "error"
-  >("idle");
-  const [progress, setProgress] = useState({ current: 0, total: 0 });
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   async function handleDownloadZip() {
-    setErrorMessage(null);
+    const toastId = toast.loading(t("export.preparing"));
+    setIsExporting(true);
     try {
       const validationErrors = validateThemeState(state);
       if (validationErrors.length > 0) {
-        throw new Error(t(`export.errors.${validationErrors[0]}`));
+        toast.error(t(`export.errors.${validationErrors[0]}`), { id: toastId });
+        return;
       }
 
       const manifest = buildManifest(state);
@@ -114,13 +113,18 @@ export function ExportButton() {
         ] => Boolean(entry[1]),
       );
 
-      setProgress({ current: 0, total: present.length });
-      setStatus("converting");
       // 画像を順番に処理してピークメモリを抑えつつ、進捗を画面へ反映する。
       const shouldScaleNtpBackground =
         state.properties.ntp_background_scale_to_cover ?? false;
 
       for (const [index, [key, fileRef]] of present.entries()) {
+        toast.loading(
+          t("export.converting", {
+            current: index + 1,
+            total: present.length,
+          }),
+          { id: toastId },
+        );
         if (fileRef.blob instanceof File) {
           await validateImageFile(fileRef.blob);
         } else {
@@ -133,52 +137,31 @@ export function ExportButton() {
             : undefined,
         );
         files.push({ name: `images/${String(key)}.png`, data });
-        setProgress({ current: index + 1, total: present.length });
       }
 
-      setStatus("creating-zip");
       // 変換完了後にだけZIPを組み立て、処理中の二重ダウンロードを避ける。
+      toast.loading(t("export.creatingZip"), { id: toastId });
       const blob = await createZip(files);
       triggerDownload(`${safeDownloadName(state.name)}.zip`, blob);
-      setStatus("success");
+      toast.success(t("export.success"), { id: toastId });
     } catch (error) {
       console.error(error);
-      setStatus("error");
-      setErrorMessage(
+      toast.error(
         error instanceof Error ? error.message : t("export.errors.generic"),
+        { id: toastId },
       );
+    } finally {
+      setIsExporting(false);
     }
   }
 
-  const isExporting = status === "converting" || status === "creating-zip";
-  const statusText =
-    status === "converting"
-      ? t("export.converting", progress)
-      : status === "creating-zip"
-        ? t("export.creatingZip")
-        : status === "success"
-          ? t("export.success")
-          : null;
-
   return (
-    <Stack gap={4} align="flex-end">
-      <Button
-        onClick={() => void handleDownloadZip()}
-        loading={isExporting}
-        disabled={isExporting}
-      >
-        {t("export.download")}
-      </Button>
-      {statusText && (
-        <Text size="xs" c={status === "success" ? "green" : "dimmed"}>
-          {statusText}
-        </Text>
-      )}
-      {errorMessage && (
-        <Alert color="red" p="xs" role="alert">
-          {errorMessage}
-        </Alert>
-      )}
-    </Stack>
+    <Button
+      onClick={() => void handleDownloadZip()}
+      loading={isExporting}
+      disabled={isExporting}
+    >
+      {t("export.download")}
+    </Button>
   );
 }

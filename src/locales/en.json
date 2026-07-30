@@ -11,6 +11,7 @@
   },
   "export": {
     "download": "Generate Theme ZIP",
+    "preparing": "Preparing your ZIP…",
     "converting": "Converting images… {{current}} / {{total}}",
     "creatingZip": "Creating ZIP…",
     "success": "Theme ZIP downloaded",
@@ -110,7 +111,7 @@
   },
   "ntpEditor": {
     "title": "New tab background editor",
-    "description": "Combine multiple images to create a new tab background. Drag to move them and use the controls on the right to adjust size and crops.",
+    "description": "Drag an image to move it, use the corners to resize, the top handle to rotate, and the edges to crop. Use the panel for precise adjustments.",
     "layersHeading": "Layers",
     "layerCount": "{{count}} layer",
     "layerCount_plural": "{{count}} layers",
@@ -129,7 +130,11 @@
       "clearAll": "Remove all layers",
       "width": "Width",
       "height": "Height",
-      "empty": "Add images here"
+      "empty": "Add images here",
+      "moveLayer": "Move {{name}}",
+      "scaleLayer": "Resize {{name}}",
+      "rotateLayer": "Rotate {{name}}",
+      "cropLayer": "Crop {{name}}"
     },
     "layerList": {
       "empty": "Added layers will appear here.",

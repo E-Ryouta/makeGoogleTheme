@@ -11,6 +11,7 @@
   },
   "export": {
     "download": "テーマをZIPで生成",
+    "preparing": "ZIPの準備をしています…",
     "converting": "画像を変換中… {{current}} / {{total}}",
     "creatingZip": "ZIPを生成中…",
     "success": "ZIPをダウンロードしました",
@@ -110,7 +111,7 @@
   },
   "ntpEditor": {
     "title": "ホーム背景画像エディター",
-    "description": "複数の画像を組み合わせてホーム画面の背景画像を作成できます。ドラッグで移動し、右側のコントロールでサイズや切り抜きを調整してください。",
+    "description": "画像をドラッグして移動し、四隅で拡大・縮小、上のハンドルで回転、四辺で切り抜きできます。右側では数値を微調整できます。",
     "layersHeading": "レイヤー",
     "layerCount": "{{count}} 件",
     "cancel": "キャンセル",
@@ -128,7 +129,11 @@
       "clearAll": "すべてのレイヤーを削除",
       "width": "幅",
       "height": "高さ",
-      "empty": "ここに画像を追加してください"
+      "empty": "ここに画像を追加してください",
+      "moveLayer": "{{name}}を移動",
+      "scaleLayer": "{{name}}を拡大・縮小",
+      "rotateLayer": "{{name}}を回転",
+      "cropLayer": "{{name}}を切り抜き"
     },
     "layerList": {
       "empty": "追加したレイヤーがここに表示されます。",
