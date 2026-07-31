@@ -1,15 +1,23 @@
-import { Button, Grid, Paper, Stack } from "@mantine/core";
+import { Button, Center, Grid, Loader, Paper, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { setProperty, useTheme } from "../../../../store/themeStore";
 import { SettingCard } from "../../../common/SettingCard";
 import { ImageField } from "../../../fields/imageField/ImageField";
-import { NtpBackgroundEditorModal } from "../../../fields/imageField/NtpBackgroundEditorModal";
 import { NtpBackgroundPositionSelect } from "../../../fields/imageField/NtpBackgroundPositionSelect";
 import { NtpBackgroundRepeatAndLogo } from "../../../fields/imageField/NtpBackgroundRepeatAndLogo";
 import { NtpBackgroundScaleControl } from "../../../fields/imageField/NtpBackgroundScaleControl";
 import { NtpEdgeColorButton } from "../../../fields/imageField/NtpEdgeColorButton";
 import MajorSectionHeader from "./MajorSectionHeader";
+
+const loadNtpBackgroundEditor = () =>
+  import("../../../fields/imageField/NtpBackgroundEditorModal");
+
+const LazyNtpBackgroundEditorModal = lazy(async () => {
+  const module = await loadNtpBackgroundEditor();
+  return { default: module.NtpBackgroundEditorModal };
+});
 
 export default function ImagesSection() {
   const { state, dispatch } = useTheme();
@@ -39,7 +47,14 @@ export default function ImagesSection() {
         label={t("images.ntpBackground")}
         imageKey="theme_ntp_background"
         actionSlot={
-          <Button variant="default" size="xs" onClick={openEditor}>
+          <Button
+            variant="default"
+            size="xs"
+            onClick={openEditor}
+            // 操作直前に先読みし、分割後もマウス・キーボード操作の待ち時間を抑える。
+            onMouseEnter={() => void loadNtpBackgroundEditor()}
+            onFocus={() => void loadNtpBackgroundEditor()}
+          >
             {t("images.editBackground")}
           </Button>
         }
@@ -87,12 +102,22 @@ export default function ImagesSection() {
           </Stack>
         </Paper>
       )}
-      <NtpBackgroundEditorModal
-        opened={editorOpened}
-        onClose={closeEditor}
-        dispatch={dispatch}
-        current={state.images.theme_ntp_background}
-      />
+      {editorOpened && (
+        <Suspense
+          fallback={
+            <Center py="md">
+              <Loader size="sm" />
+            </Center>
+          }
+        >
+          <LazyNtpBackgroundEditorModal
+            opened
+            onClose={closeEditor}
+            dispatch={dispatch}
+            current={state.images.theme_ntp_background}
+          />
+        </Suspense>
+      )}
     </Stack>
   );
 }
